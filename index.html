@@ -927,7 +927,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbweN4nYBZnvxW3CTc9QYP0LynqdGBeFPImRWSwp4w-vlDuB2WXxOxEK8YLH1IswNx70/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwE-adrPJZ8xWq6ez0DnqDtu475z_HdDj1uL0jRlXj74I3h27oN36KtvUD7xkk22uY/exec';
 
   /* ── TABS ── */
   const PANELS = ['electrical','vibration','fuel','chemical','purchase'];
@@ -1259,7 +1259,31 @@
       deliveryRemarks: deliveryOpen?g('fuel_delivery_remarks'):'',
     };
     submitViaJSONP(params,
-      function(){ showToast('Fuel report submitted!'); document.getElementById('fuelForm').reset(); calcFuel(); deliveryOpen=false; document.getElementById('fuelDeliverySection').classList.remove('show'); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT FUEL REPORT'; },
+      function(){
+        showToast('Fuel report submitted!');
+        // Save pres values before reset
+        var savedMainPres = document.getElementById('fuel-main-pres').value;
+        var savedDayPres  = document.getElementById('fuel-day-pres').value;
+        var savedMainPresL = document.getElementById('fuel-main-pres-L').textContent;
+        var savedDayPresL  = document.getElementById('fuel-day-pres-L').textContent;
+        document.getElementById('fuelForm').reset();
+        deliveryOpen=false;
+        document.getElementById('fuelDeliverySection').classList.remove('show');
+        // Immediately pre-fill previous from what was just submitted
+        if(savedMainPres){
+          document.getElementById('fuel-main-prev').value=savedMainPres;
+          document.getElementById('fuel-main-prev-L').textContent=savedMainPresL;
+        }
+        if(savedDayPres){
+          document.getElementById('fuel-day-prev').value=savedDayPres;
+          document.getElementById('fuel-day-prev-L').textContent=savedDayPresL;
+        }
+        calcFuel();
+        window.scrollTo({top:0,behavior:'smooth'});
+        btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT FUEL REPORT';
+        // Also refresh from sheet after delay to catch any delivery adjustments
+        setTimeout(loadLastFuelReadings, 4000);
+      },
       function(){ showToast('Failed. Check connection.',true); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT FUEL REPORT'; }
     );
   });
