@@ -250,6 +250,7 @@
   .fuel-input-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
   .fuel-input-wrap input[type="number"] { height:36px; font-size:.92rem; border-radius:7px; min-width:70px; padding:0 .3rem; }
   .fuel-unit { font-size:.5rem; color:#3d4f6e; letter-spacing:.04em; }
+  #fuel-main-prev, #fuel-day-prev { pointer-events:none !important; -webkit-user-select:none !important; user-select:none !important; }
   .fuel-liters-display { font-size:.6rem; color:var(--accent2); text-align:center; margin-top:2px; letter-spacing:.02em; }
   .fuel-total { font-family:'Rajdhani',sans-serif; font-size:1rem; font-weight:700; color:var(--accent2); text-align:center; letter-spacing:.04em; min-width:70px; }
   .fuel-total-unit { font-size:.55rem; color:var(--muted); display:block; margin-top:1px; }
@@ -725,7 +726,7 @@
             <td><div class="fuel-tank-label">Main Tank</div></td>
             <td>
               <div class="fuel-input-wrap">
-                <input type="number" id="fuel-main-prev" name="fuel_main_prev" placeholder="auto" step="0.1" inputmode="decimal" oninput="calcFuel()" readonly style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:default;" />
+                <input type="text" id="fuel-main-prev" name="fuel_main_prev" placeholder="loading..." readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;" />
                 <span class="fuel-unit">cm</span>
               </div>
               <div class="fuel-liters-display" id="fuel-main-prev-L">-- L</div>
@@ -744,7 +745,7 @@
             <td><div class="fuel-tank-label">Day Tank</div></td>
             <td>
               <div class="fuel-input-wrap">
-                <input type="number" id="fuel-day-prev" name="fuel_day_prev" placeholder="auto" step="0.1" inputmode="decimal" oninput="calcFuel()" readonly style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:default;" />
+                <input type="text" id="fuel-day-prev" name="fuel_day_prev" placeholder="loading..." readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;" />
                 <span class="fuel-unit">cm</span>
               </div>
               <div class="fuel-liters-display" id="fuel-day-prev-L">-- L</div>
