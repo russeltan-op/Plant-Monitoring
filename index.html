@@ -586,7 +586,13 @@
     <div class="card-title">Equipment</div>
     <div class="field">
       <label>Equipment Being Monitored <span class="required">*</span></label>
-      <input type="text" id="vib-equipment" placeholder="e.g. Hammer Mill #1, Conveyor B, Air Compressor..." required />
+      <select id="vib-equipment" required>
+        <option value="" disabled selected>Select equipment...</option>
+        <option value="Hammer Mill">Hammer Mill</option>
+        <option value="Pellet Mill">Pellet Mill</option>
+        <option value="Bucket Elevator">Bucket Elevator</option>
+        <option value="Blower">Blower</option>
+      </select>
     </div>
   </div>
   <!-- Equipment Vibration Table -->
@@ -1046,36 +1052,33 @@
   });
 
   /* ── VIBRATION SUBMIT ── */
-  const VIB_ROWS = [
-    { point:'M1', location:'Motor Drive End Bearing' },
-    { point:'M2', location:'Motor Non-Drive End Bearing' },
-    { point:'P1', location:'Input Shaft Housing' },
-    { point:'P2', location:'Front Housing' },
-    { point:'B1', location:'Motor Base' },
-    { point:'B2', location:'Equipment Base / Frame' },
-  ];
-
   document.getElementById('vibrationForm').addEventListener('submit', function(e){
     e.preventDefault();
     const btn = document.getElementById('vibSubmitBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation:spin 1s linear infinite;width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.2"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg> Submitting...';
+    btn.disabled = true; btn.innerHTML = SPIN_SVG + ' Submitting...';
     const now = new Date();
     const form = document.getElementById('vibrationForm');
-    const rows = VIB_ROWS.map((meta, i) => {
-      const r = i + 1;
-      return {
-        point:    meta.point,
-        location: meta.location,
-        h: form.querySelector(`[name="vib_r${r}_h"]`)?.value || '',
-        v: form.querySelector(`[name="vib_r${r}_v"]`)?.value || '',
-        a: form.querySelector(`[name="vib_r${r}_a"]`)?.value || '',
-      };
-    });
-    const params = { type:'vibration', timestamp:now.toISOString(), date:now.toLocaleDateString('en-PH'), time:now.toLocaleTimeString('en-PH'), plant:document.getElementById('vib-plant').value, technician:document.getElementById('vib-tech').value, shift:document.getElementById('vib-shift').value, remarks:form.querySelector('[name="vib_remarks"]').value, rows };
+    const g = function(name){ var el=form.querySelector('[name="'+name+'"]'); return el?el.value:''; };
+    const params = {
+      type:'vibration',
+      timestamp: now.toISOString(),
+      date: now.toLocaleDateString('en-PH'),
+      time: now.toLocaleTimeString('en-PH'),
+      plant:      document.getElementById('vib-plant').value,
+      technician: document.getElementById('vib-tech').value,
+      shift:      document.getElementById('vib-shift').value,
+      equipment:  document.getElementById('vib-equipment').value,
+      m1_h: g('vib_r1_h'), m1_v: g('vib_r1_v'), m1_a: g('vib_r1_a'),
+      m2_h: g('vib_r2_h'), m2_v: g('vib_r2_v'), m2_a: g('vib_r2_a'),
+      p1_h: g('vib_r3_h'), p1_v: g('vib_r3_v'), p1_a: g('vib_r3_a'),
+      p2_h: g('vib_r4_h'), p2_v: g('vib_r4_v'), p2_a: g('vib_r4_a'),
+      b1_h: g('vib_r5_h'), b1_v: g('vib_r5_v'), b1_a: g('vib_r5_a'),
+      b2_h: g('vib_r6_h'), b2_v: g('vib_r6_v'), b2_a: g('vib_r6_a'),
+      remarks: g('vib_remarks'),
+    };
     submitViaJSONP(params,
-      function(){ showToast('✓ Vibration report submitted!'); document.getElementById('vibrationForm').reset(); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> SUBMIT VIBRATION REPORT'; },
-      function(err){ showToast('⚠ Failed. Check your connection.', true); btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> SUBMIT VIBRATION REPORT'; }
+      function(){ showToast('Vibration report submitted!'); document.getElementById('vibrationForm').reset(); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT VIBRATION REPORT'; },
+      function(){ showToast('Failed. Check connection.',true); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT VIBRATION REPORT'; }
     );
   });
 
