@@ -726,7 +726,7 @@
             <td><div class="fuel-tank-label">Main Tank</div></td>
             <td>
               <div class="fuel-input-wrap">
-                <input type="text" id="fuel-main-prev" name="fuel_main_prev" placeholder="loading..." readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;" />
+                <input type="text" id="fuel-main-prev" name="fuel_main_prev" placeholder="—" readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;text-align:center;" />
                 <span class="fuel-unit">cm</span>
               </div>
               <div class="fuel-liters-display" id="fuel-main-prev-L">-- L</div>
@@ -745,7 +745,7 @@
             <td><div class="fuel-tank-label">Day Tank</div></td>
             <td>
               <div class="fuel-input-wrap">
-                <input type="text" id="fuel-day-prev" name="fuel_day_prev" placeholder="loading..." readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;" />
+                <input type="text" id="fuel-day-prev" name="fuel_day_prev" placeholder="—" readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;text-align:center;" />
                 <span class="fuel-unit">cm</span>
               </div>
               <div class="fuel-liters-display" id="fuel-day-prev-L">-- L</div>
@@ -927,7 +927,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwSaHlbF-eXItVFIbpswGX0ByRyUWnEcGjQ-QLM4ocPiwVIEDBv--SaGuAWkyimE5Y/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbweN4nYBZnvxW3CTc9QYP0LynqdGBeFPImRWSwp4w-vlDuB2WXxOxEK8YLH1IswNx70/exec';
 
   /* ── TABS ── */
   const PANELS = ['electrical','vibration','fuel','chemical','purchase'];
@@ -1160,22 +1160,62 @@
 
   /* ── LOAD LAST FUEL READINGS FROM GAS ── */
   function loadLastFuelReadings() {
+    // Set fields to loading state
+    ['main','day'].forEach(function(t){
+      document.getElementById('fuel-'+t+'-prev').placeholder='fetching...';
+      document.getElementById('fuel-'+t+'-prev-L').textContent='...';
+    });
     var cbName='fuelCb_'+Date.now(), s=document.createElement('script');
-    s.onerror=function(){ delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); };
-    window[cbName]=function(res){
+    var timer=setTimeout(function(){
+      // Timeout — let tech enter manually
       delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
-      if(!res||res.result!=='success') return;
-      if(res.mainD) FUEL_DIMS.mainD=parseFloat(res.mainD)||150;
-      if(res.mainLen) FUEL_DIMS.mainL=parseFloat(res.mainLen)||400;
-      if(res.dayD)  FUEL_DIMS.dayD=parseFloat(res.dayD)||60;
-      if(res.dayLen)  FUEL_DIMS.dayL=parseFloat(res.dayLen)||120;
-      if(res.mainPrev!==''&&res.mainPrev!==undefined){
+      ['main','day'].forEach(function(t){
+        document.getElementById('fuel-'+t+'-prev').placeholder='enter manually';
+        document.getElementById('fuel-'+t+'-prev-L').textContent='';
+        // Re-enable for manual entry on timeout only
+        document.getElementById('fuel-'+t+'-prev').style.pointerEvents='auto';
+        document.getElementById('fuel-'+t+'-prev').style.cursor='text';
+        document.getElementById('fuel-'+t+'-prev').removeAttribute('readonly');
+        document.getElementById('fuel-'+t+'-prev').type='number';
+      });
+    }, 8000);
+
+    s.onerror=function(){
+      clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
+      ['main','day'].forEach(function(t){
+        document.getElementById('fuel-'+t+'-prev').placeholder='enter manually';
+        document.getElementById('fuel-'+t+'-prev-L').textContent='';
+        document.getElementById('fuel-'+t+'-prev').style.pointerEvents='auto';
+        document.getElementById('fuel-'+t+'-prev').style.cursor='text';
+        document.getElementById('fuel-'+t+'-prev').removeAttribute('readonly');
+        document.getElementById('fuel-'+t+'-prev').type='number';
+      });
+    };
+
+    window[cbName]=function(res){
+      clearTimeout(timer);
+      delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
+      // Update tank dims
+      if(res.mainD)   FUEL_DIMS.mainD = parseFloat(res.mainD)||150;
+      if(res.mainLen) FUEL_DIMS.mainL = parseFloat(res.mainLen)||400;
+      if(res.dayD)    FUEL_DIMS.dayD  = parseFloat(res.dayD)||60;
+      if(res.dayLen)  FUEL_DIMS.dayL  = parseFloat(res.dayLen)||120;
+      // Fill previous readings
+      if(res.mainPrev!==''&&res.mainPrev!==undefined&&res.mainPrev!==null){
         document.getElementById('fuel-main-prev').value=res.mainPrev;
-        document.getElementById('fuel-main-prev-L').textContent = res.mainPrevL ? fmtL(res.mainPrevL) : '(no prior data)';
+        document.getElementById('fuel-main-prev').placeholder='—';
+        document.getElementById('fuel-main-prev-L').textContent=fmtL(parseFloat(res.mainPrevL));
+      } else {
+        document.getElementById('fuel-main-prev').placeholder='first entry';
+        document.getElementById('fuel-main-prev-L').textContent='no prior data';
       }
-      if(res.dayPrev!==''&&res.dayPrev!==undefined){
+      if(res.dayPrev!==''&&res.dayPrev!==undefined&&res.dayPrev!==null){
         document.getElementById('fuel-day-prev').value=res.dayPrev;
-        document.getElementById('fuel-day-prev-L').textContent = res.dayPrevL ? fmtL(res.dayPrevL) : '(no prior data)';
+        document.getElementById('fuel-day-prev').placeholder='—';
+        document.getElementById('fuel-day-prev-L').textContent=fmtL(parseFloat(res.dayPrevL));
+      } else {
+        document.getElementById('fuel-day-prev').placeholder='first entry';
+        document.getElementById('fuel-day-prev-L').textContent='no prior data';
       }
       calcFuel();
     };
