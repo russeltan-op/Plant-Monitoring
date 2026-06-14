@@ -250,6 +250,7 @@
   .fuel-input-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
   .fuel-input-wrap input[type="number"] { height:36px; font-size:.92rem; border-radius:7px; min-width:70px; padding:0 .3rem; }
   .fuel-unit { font-size:.5rem; color:#3d4f6e; letter-spacing:.04em; }
+  .fuel-liters-display { font-size:.6rem; color:var(--accent2); text-align:center; margin-top:2px; letter-spacing:.02em; }
   .fuel-total { font-family:'Rajdhani',sans-serif; font-size:1rem; font-weight:700; color:var(--accent2); text-align:center; letter-spacing:.04em; min-width:70px; }
   .fuel-total-unit { font-size:.55rem; color:var(--muted); display:block; margin-top:1px; }
   .fuel-delivery-btn { width:100%; padding:.85rem; margin-bottom:.9rem; background:rgba(245,158,11,.1); border:1.5px dashed rgba(245,158,11,.45); color:var(--warn); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:.9rem; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all .18s; -webkit-tap-highlight-color:transparent; }
@@ -719,17 +720,43 @@
           </tr>
         </thead>
         <tbody>
+          <!-- MAIN TANK -->
           <tr>
             <td><div class="fuel-tank-label">Main Tank</div></td>
-            <td><div class="fuel-input-wrap"><input type="number" id="fuel-main-prev" name="fuel_main_prev" placeholder="0" step="0.1" inputmode="decimal" oninput="calcFuel()" /><span class="fuel-unit">cm</span></div></td>
-            <td><div class="fuel-input-wrap"><input type="number" id="fuel-main-pres" name="fuel_main_pres" placeholder="0" step="0.1" inputmode="decimal" oninput="calcFuel()" /><span class="fuel-unit">cm</span></div></td>
-            <td><div id="fuel-main-total" class="fuel-total">--<span class="fuel-total-unit">calculated</span></div></td>
+            <td>
+              <div class="fuel-input-wrap">
+                <input type="number" id="fuel-main-prev" name="fuel_main_prev" placeholder="auto" step="0.1" inputmode="decimal" oninput="calcFuel()" readonly style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:default;" />
+                <span class="fuel-unit">cm</span>
+              </div>
+              <div class="fuel-liters-display" id="fuel-main-prev-L">-- L</div>
+            </td>
+            <td>
+              <div class="fuel-input-wrap">
+                <input type="number" id="fuel-main-pres" name="fuel_main_pres" placeholder="0.0" step="0.1" inputmode="decimal" oninput="calcFuel()" />
+                <span class="fuel-unit">cm</span>
+              </div>
+              <div class="fuel-liters-display" id="fuel-main-pres-L">-- L</div>
+            </td>
+            <td><div id="fuel-main-total" class="fuel-total">--<span class="fuel-total-unit">liters</span></div></td>
           </tr>
+          <!-- DAY TANK -->
           <tr>
             <td><div class="fuel-tank-label">Day Tank</div></td>
-            <td><div class="fuel-input-wrap"><input type="number" id="fuel-day-prev" name="fuel_day_prev" placeholder="0" step="0.1" inputmode="decimal" oninput="calcFuel()" /><span class="fuel-unit">cm</span></div></td>
-            <td><div class="fuel-input-wrap"><input type="number" id="fuel-day-pres" name="fuel_day_pres" placeholder="0" step="0.1" inputmode="decimal" oninput="calcFuel()" /><span class="fuel-unit">cm</span></div></td>
-            <td><div id="fuel-day-total" class="fuel-total">--<span class="fuel-total-unit">calculated</span></div></td>
+            <td>
+              <div class="fuel-input-wrap">
+                <input type="number" id="fuel-day-prev" name="fuel_day_prev" placeholder="auto" step="0.1" inputmode="decimal" oninput="calcFuel()" readonly style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:default;" />
+                <span class="fuel-unit">cm</span>
+              </div>
+              <div class="fuel-liters-display" id="fuel-day-prev-L">-- L</div>
+            </td>
+            <td>
+              <div class="fuel-input-wrap">
+                <input type="number" id="fuel-day-pres" name="fuel_day_pres" placeholder="0.0" step="0.1" inputmode="decimal" oninput="calcFuel()" />
+                <span class="fuel-unit">cm</span>
+              </div>
+              <div class="fuel-liters-display" id="fuel-day-pres-L">-- L</div>
+            </td>
+            <td><div id="fuel-day-total" class="fuel-total">--<span class="fuel-total-unit">liters</span></div></td>
           </tr>
         </tbody>
       </table>
@@ -1087,22 +1114,63 @@
 
   
 
+  /* ── FUEL STATE (dims loaded from GAS) ── */
+  var FUEL_DIMS = { mainD:150, mainL:400, dayD:60, dayL:120 };
+
+  /* ── CYLINDER VOLUME client-side ── */
+  function cylL(h, D, L) {
+    var R=D/2; h=Math.min(Math.max(parseFloat(h)||0,0),D);
+    if(h<=0) return 0;
+    if(h>=D) return Math.PI*R*R*L/1000;
+    return L*(R*R*Math.acos((R-h)/R)-(R-h)*Math.sqrt(2*R*h-h*h))/1000;
+  }
+  function fmtL(v){ return (!isNaN(v)&&v!==null) ? parseFloat(v).toFixed(1)+' L' : '-- L'; }
+
   /* ── FUEL CALCULATIONS ── */
   function calcFuel() {
-    ['main','day'].forEach(function(tank) {
-      var prev=parseFloat(document.getElementById('fuel-'+tank+'-prev').value);
-      var pres=parseFloat(document.getElementById('fuel-'+tank+'-pres').value);
-      var el=document.getElementById('fuel-'+tank+'-total');
+    var tanks=[{k:'main',D:FUEL_DIMS.mainD,L:FUEL_DIMS.mainL},{k:'day',D:FUEL_DIMS.dayD,L:FUEL_DIMS.dayL}];
+    tanks.forEach(function(t){
+      var prev=parseFloat(document.getElementById('fuel-'+t.k+'-prev').value);
+      var pres=parseFloat(document.getElementById('fuel-'+t.k+'-pres').value);
+      var el=document.getElementById('fuel-'+t.k+'-total');
+      var presLEl=document.getElementById('fuel-'+t.k+'-pres-L');
+      if(!isNaN(pres)){ presLEl.textContent=fmtL(cylL(pres,t.D,t.L)); } else { presLEl.textContent='-- L'; }
       if(!isNaN(prev)&&!isNaN(pres)){
-        var diff=(prev-pres).toFixed(2);
-        el.innerHTML=diff+'<span class="fuel-total-unit">cm consumed</span>';
+        var diff=cylL(prev,t.D,t.L)-cylL(pres,t.D,t.L);
+        el.innerHTML=diff.toFixed(1)+'<span class="fuel-total-unit">liters</span>';
         el.style.color=diff>0?'var(--warn)':diff<0?'var(--success)':'var(--accent2)';
       } else {
-        el.innerHTML='--<span class="fuel-total-unit">calculated</span>';
+        el.innerHTML='--<span class="fuel-total-unit">liters</span>';
         el.style.color='var(--accent2)';
       }
     });
   }
+
+  /* ── LOAD LAST FUEL READINGS FROM GAS ── */
+  function loadLastFuelReadings() {
+    var cbName='fuelCb_'+Date.now(), s=document.createElement('script');
+    s.onerror=function(){ delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); };
+    window[cbName]=function(res){
+      delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
+      if(!res||res.result!=='success') return;
+      if(res.mainD) FUEL_DIMS.mainD=parseFloat(res.mainD)||150;
+      if(res.mainLen) FUEL_DIMS.mainL=parseFloat(res.mainLen)||400;
+      if(res.dayD)  FUEL_DIMS.dayD=parseFloat(res.dayD)||60;
+      if(res.dayLen)  FUEL_DIMS.dayL=parseFloat(res.dayLen)||120;
+      if(res.mainPrev!==''&&res.mainPrev!==undefined){
+        document.getElementById('fuel-main-prev').value=res.mainPrev;
+        document.getElementById('fuel-main-prev-L').textContent=fmtL(res.mainPrevL);
+      }
+      if(res.dayPrev!==''&&res.dayPrev!==undefined){
+        document.getElementById('fuel-day-prev').value=res.dayPrev;
+        document.getElementById('fuel-day-prev-L').textContent=fmtL(res.dayPrevL);
+      }
+      calcFuel();
+    };
+    s.src=SCRIPT_URL+'?action=getLastFuel&callback='+cbName;
+    document.head.appendChild(s);
+  }
+
 
   /* ── FUEL DELIVERY TOGGLE ── */
   var deliveryOpen=false;
@@ -1130,6 +1198,7 @@
       mainTankConsumption:(!isNaN(mp)&&!isNaN(ms))?(mp-ms).toFixed(2):'',
       dayTankPrev:g('fuel_day_prev'), dayTankPres:g('fuel_day_pres'),
       dayTankConsumption:(!isNaN(dp)&&!isNaN(ds))?(dp-ds).toFixed(2):'',
+      dayTankConsumptionL: (!isNaN(dp)&&!isNaN(ds))?(cylL(dp,FUEL_DIMS.dayD,FUEL_DIMS.dayL)-cylL(ds,FUEL_DIMS.dayD,FUEL_DIMS.dayL)).toFixed(1):'',
       remarks:g('fuel_remarks'),
       hasDelivery:deliveryOpen?'YES':'NO',
       deliveryTank:    deliveryOpen?g('fuel_delivery_tank'):'',
@@ -1281,6 +1350,7 @@
       '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> SIGN IN';
 
     showToast('Welcome, ' + user.name + '!');
+    loadLastFuelReadings();
   }
 
   function loginFailed(msg) {
