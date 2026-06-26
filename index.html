@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<!DOCTY
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvHlWGcATkyWLakBbbLes0HKS-4rjf5L5DTRcMt_R31EHOCjIeEp3AO7KJFTi2N4b7/exec';
+PE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -391,852 +393,20 @@
 
 
   /* ── MAINTENANCE CHECKLIST ── */
-  .checklist-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem; margin-bottom:.9rem; }
-  .checklist-grid { display:grid; grid-template-columns:1fr 1fr; gap:.55rem; }
-  .check-item {
-    display:flex; align-items:center; gap:10px;
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:9px; padding:.65rem .8rem; cursor:pointer;
-    transition:all .2s; -webkit-tap-highlight-color:transparent;
-    user-select:none;
-  }
-  .check-item.checked {
-    border-color:var(--success); background:rgba(16,185,129,.12);
-  }
-  .check-box {
-    width:20px; height:20px; border-radius:5px; flex-shrink:0;
-    border:2px solid var(--border); background:var(--surface3);
-    display:flex; align-items:center; justify-content:center;
-    transition:all .2s;
-  }
-  .check-item.checked .check-box {
-    background:var(--success); border-color:var(--success);
-  }
-  .check-box svg { width:11px; height:11px; stroke:#fff; fill:none; stroke-width:3; opacity:0; transition:opacity .15s; }
-  .check-item.checked .check-box svg { opacity:1; }
-  .check-label { font-size:.82rem; color:var(--muted); font-weight:500; line-height:1.3; transition:color .2s; }
-  .check-item.checked .check-label { color:var(--success); }
-
-  /* ── COMING SOON PANEL ── */
-  .coming-soon {
-    text-align: center; padding: 3rem 1.5rem;
-    color: var(--muted);
-  }
-  .coming-soon-icon {
-    width: 52px; height: 52px; border-radius: 14px;
-    background: var(--surface2); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1rem;
-  }
-  .coming-soon-icon svg { width: 22px; height: 22px; stroke: var(--muted); fill: none; stroke-width: 1.8; }
-  .coming-soon h3 { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .1em; color: var(--text); text-transform: uppercase; margin-bottom: .35rem; }
-  .coming-soon p { font-size: .8rem; }
-
-  /* ── SUBMIT ── */
-  .submit-btn {
-    width:100%; padding:1rem; background:var(--accent); border:none;
-    border-radius:var(--radius); color:#fff; font-family:'Rajdhani',sans-serif;
-    font-size:1.1rem; font-weight:700; letter-spacing:.1em; cursor:pointer;
-    transition:all .2s; display:flex; align-items:center; justify-content:center; gap:10px;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .submit-btn:active { transform:scale(.98); }
-  .submit-btn:disabled { background:#2a3a55; color:var(--muted); cursor:not-allowed; }
-  .submit-btn svg { width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.5; }
-
-  .toast {
-    position:fixed; bottom:1.5rem; left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:var(--success); color:#fff;
-    padding:.75rem 1.5rem; border-radius:50px;
-    font-size:.88rem; font-weight:500; z-index:100;
-    transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-    white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,.4);
-  }
-  .toast.show { transform:translateX(-50%) translateY(0); }
-  .toast.error { background:var(--danger); }
-
-  @keyframes spin { to { transform:rotate(360deg); } }
-  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
-</style>
-</head>
-<body>
-
-<!-- ══════════════════════════════════════
-     LOGIN OVERLAY
-══════════════════════════════════════ -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-card">
-    <div class="login-logo">
-      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-    </div>
-    <div class="login-title">Plant Monitoring</div>
-    <div class="login-sub">Sign in to access your shift report</div>
-
-    <div class="login-field">
-      <label>Username</label>
-      <input type="text" id="loginUser" placeholder="Enter your username..." autocomplete="username" autocapitalize="none" />
-    </div>
-    <div class="login-field">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="Enter your password..." autocomplete="current-password" />
-    </div>
-
-    <button class="login-btn" id="loginBtn" onclick="doLogin()">
-      <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      SIGN IN
-    </button>
-    <div class="login-error" id="loginError">Incorrect username or password. Please try again.</div>
-  </div>
-</div>
-
-
-<!-- HEADER -->
-<div class="header">
-  <div class="header-icon">
-    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-  </div>
-  <div class="header-text">
-    <h1>PLANT MONITORING SYSTEM</h1>
-    <p>Shift Report · Multi-Discipline</p>
-  </div>
-  <div class="user-badge" id="userBadge">
-    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    <span id="badgeName">—</span>
-    <button class="logout-btn" onclick="doLogout()">logout</button>
-  </div>
-</div>
-<div class="live-bar"><div class="dot"></div><span>Live · Syncs to dashboard</span></div>
-
-<!-- TAB NAV -->
-<div class="tab-nav-wrap">
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('electrical')" id="tab-electrical">
-      <svg viewBox="0 0 24 24"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      Line
-    </button>
-    <button class="tab-btn" onclick="switchTab('vibration')" id="tab-vibration">
-      <svg viewBox="0 0 24 24"><path d="M2 12h2l3-9 4 18 3-9h2"/><line x1="20" y1="8" x2="20" y2="16"/></svg>
-      Vibration
-    </button>
-    <button class="tab-btn" onclick="switchTab('fuel')" id="tab-fuel">
-      <svg viewBox="0 0 24 24"><path d="M3 22V8l7-6 7 6v14"/><rect x="9" y="14" width="4" height="8"/><path d="M17 8h1a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1"/></svg>
-      Fuel
-    </button>
-    <button class="tab-btn" onclick="switchTab('chemical')" id="tab-chemical">
-      <svg viewBox="0 0 24 24"><path d="M9 3h6v10l4 8H5l4-8V3z"/><line x1="9" y1="7" x2="15" y2="7"/></svg>Chem &amp; Softener
-    </button>
-    <button class="tab-btn disabled" id="tab-purchase">
-      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      Purchase
-      <span class="tab-badge">SOON</span>
-    </button>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════
-     TAB 1 — LINE MONITORING (ELECTRICAL)
-════════════════════════════════════════════════ -->
-<div class="tab-panel active" id="panel-electrical">
-<div class="container">
-<form id="electricalForm">
-
-  <div class="card">
-    <div class="card-title">Identification</div>
-    <div class="field">
-      <label>Plant <span class="required">*</span></label>
-      <div class="id-locked" id="elec-plant-display"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="id-locked-val" id="elec-plant-val">—</span><span class="id-locked-sub">auto-filled</span></div><input type="hidden" id="elec-plant" name="elec_plant" />
-    </div>
-    <div class="field">
-      <label>Technician Name <span class="required">*</span></label>
-      <div class="id-locked" id="elec-tech-display"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="id-locked-val" id="elec-tech-val">—</span><span class="id-locked-sub">signed in</span></div><input type="hidden" id="elec-tech" name="elec_tech" />
-    </div>
-    <div class="row-2">
-      <div class="field">
-        <label>Shift</label>
-        <div class="id-locked" id="elec-shift-display"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="id-locked-val" id="elec-shift-val">—</span><span class="id-locked-sub">assigned</span></div><input type="hidden" id="elec-shift" name="elec_shift" />
-      </div>
-      <div class="field">
-        <label>Date &amp; Time</label>
-        <div class="timestamp-pill"><div class="ts-dot"></div><span class="ts-display">—</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="deviceList"></div>
-
-  <button type="button" class="add-device-btn" onclick="addDevice()">
-    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    Add Device
-  </button>
-
-  <button type="submit" class="submit-btn" id="elecSubmitBtn">
-    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    SUBMIT LINE REPORT
-  </button>
-
-</form>
-</div>
-</div><!-- /panel-electrical -->
-
-<!-- ═══════════════════════════════════════════════
-     TAB 2 — VIBRATION MONITORING
-════════════════════════════════════════════════ -->
-<div class="tab-panel" id="panel-vibration">
-<div class="container">
-<form id="vibrationForm">
-
-  <!-- Identification -->
-  <div class="card">
-    <div class="card-title">Identification</div>
-    <div class="field">
-      <label>Plant <span class="required">*</span></label>
-      <div class="id-locked" id="vib-plant-display"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="id-locked-val" id="vib-plant-val">—</span><span class="id-locked-sub">auto-filled</span></div><input type="hidden" id="vib-plant" name="vib_plant" />
-    </div>
-    <div class="field">
-      <label>Technician Name <span class="required">*</span></label>
-      <div class="id-locked" id="vib-tech-display"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="id-locked-val" id="vib-tech-val">—</span><span class="id-locked-sub">signed in</span></div><input type="hidden" id="vib-tech" name="vib_tech" />
-    </div>
-    <div class="row-2">
-      <div class="field">
-        <label>Shift</label>
-        <div class="id-locked" id="vib-shift-display"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="id-locked-val" id="vib-shift-val">—</span><span class="id-locked-sub">assigned</span></div><input type="hidden" id="vib-shift" name="vib_shift" />
-      </div>
-      <div class="field">
-        <label>Date &amp; Time</label>
-        <div class="timestamp-pill"><div class="ts-dot"></div><span class="ts-display">—</span></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Equipment Being Monitored -->
-  <div class="card">
-    <div class="card-title">Equipment</div>
-    <div class="field">
-      <label>Equipment Being Monitored <span class="required">*</span></label>
-      <select id="vib-equipment" required>
-        <option value="" disabled selected>Select equipment...</option>
-        <option value="Hammer Mill">Hammer Mill</option>
-        <option value="Pellet Mill">Pellet Mill</option>
-        <option value="Bucket Elevator">Bucket Elevator</option>
-        <option value="Blower">Blower</option>
-      </select>
-    </div>
-  </div>
-  <!-- Equipment Vibration Table -->
-  <div class="card">
-    <div class="card-title">Equipment Readings</div>
-
-    <div class="vib-table-wrap">
-      <table class="vib-table" id="vibTable">
-        <thead>
-          <tr>
-            <th class="col-point">Point</th>
-            <th class="col-location">Location</th>
-            <th>Horizontal</th>
-            <th>Vertical</th>
-            <th>Axial</th>
-          </tr>
-        </thead>
-        <tbody id="vibTableBody">
-          <!-- Row 1: M1 — Motor Drive End Bearing -->
-          <tr>
-            <td><div class="vib-point">M1</div></td>
-            <td><div class="vib-location">Motor Drive End Bearing<span class="sub">Motor</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r1_h" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r1_v" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r1_a" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-          </tr>
-          <!-- Row 2: M2 — Motor Non-Drive End Bearing -->
-          <tr>
-            <td><div class="vib-point">M2</div></td>
-            <td><div class="vib-location">Motor Non-Drive End Bearing<span class="sub">Motor</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r2_h" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r2_v" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r2_a" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-          </tr>
-          <!-- Row 3: P1 — Input Shaft Housing -->
-          <tr>
-            <td><div class="vib-point">P1</div></td>
-            <td><div class="vib-location">Input Shaft Housing<span class="sub">Gearbox / Pump</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r3_h" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r3_v" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r3_a" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-          </tr>
-          <!-- Row 4: P2 — Front Housing -->
-          <tr>
-            <td><div class="vib-point">P2</div></td>
-            <td><div class="vib-location">Front Housing<span class="sub">Gearbox / Pump</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r4_h" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r4_v" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r4_a" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-          </tr>
-          <!-- Row 5: B1 — Motor Base -->
-          <tr>
-            <td><div class="vib-point">B1</div></td>
-            <td><div class="vib-location">Motor Base<span class="sub">Structure</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r5_h" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r5_v" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r5_a" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-          </tr>
-          <!-- Row 6: B2 — Equipment Base/Frame -->
-          <tr>
-            <td><div class="vib-point">B2</div></td>
-            <td><div class="vib-location">Equipment Base / Frame<span class="sub">Structure</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r6_h" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r6_v" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-            <td><div class="vib-input-wrap"><input type="number" name="vib_r6_a" placeholder="0.0" step="0.01" inputmode="decimal" /><span class="vib-unit">mm/s</span></div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Overall remarks -->
-    <div class="field" style="margin-top:.2rem;">
-      <label>Remarks / Observations</label>
-      <textarea name="vib_remarks" placeholder="Note any abnormal readings, unusual noise, heat, etc..."></textarea>
-    </div>
-  </div>
-
-  <button type="submit" class="submit-btn" id="vibSubmitBtn">
-    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    SUBMIT VIBRATION REPORT
-  </button>
-
-</form>
-</div>
-</div><!-- /panel-vibration -->
-
-<!-- ═══════ COMING SOON PANELS ═══════ -->
-<div class="tab-panel" id="panel-fuel">
-<div class="container">
-<form id="fuelForm">
-
-  <div class="card">
-    <div class="card-title">Identification</div>
-    <div class="field">
-      <label>Plant <span class="required">*</span></label>
-      <div class="id-locked" id="fuel-plant-display"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="id-locked-val" id="fuel-plant-val">—</span><span class="id-locked-sub">auto-filled</span></div><input type="hidden" id="fuel-plant" name="fuel_plant" />
-    </div>
-    <div class="field">
-      <label>Technician Name <span class="required">*</span></label>
-      <div class="id-locked" id="fuel-tech-display"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="id-locked-val" id="fuel-tech-val">—</span><span class="id-locked-sub">signed in</span></div><input type="hidden" id="fuel-tech" name="fuel_tech" />
-    </div>
-    <div class="row-2">
-      <div class="field">
-        <label>Shift</label>
-        <div class="id-locked" id="fuel-shift-display"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="id-locked-val" id="fuel-shift-val">—</span><span class="id-locked-sub">assigned</span></div><input type="hidden" id="fuel-shift" name="fuel_shift" />
-      </div>
-      <div class="field">
-        <label>Date &amp; Time</label>
-        <div class="timestamp-pill"><div class="ts-dot"></div><span class="ts-display">--</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Tank Readings</div>
-    <div class="fuel-table-wrap">
-      <table class="fuel-table">
-        <thead>
-          <tr>
-            <th style="text-align:left;min-width:100px;">Tank</th>
-            <th>Present Reading</th>
-            <th>Volume</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><div class="fuel-tank-label">Day Tank</div></td>
-            <td>
-              <div class="fuel-input-wrap">
-                <input type="number" id="fuel-day-pres" name="fuel_day_pres" placeholder="0.0" step="0.1" inputmode="decimal" oninput="calcFuel()" />
-                <span class="fuel-unit">cm</span>
-              </div>
-            </td>
-            <td><div id="fuel-day-vol" class="fuel-total" style="font-size:.85rem;">--<span class="fuel-total-unit">liters</span></div></td>
-          </tr>
-          <tr>
-            <td><div class="fuel-tank-label">Main Tank</div></td>
-            <td>
-              <div class="fuel-input-wrap">
-                <input type="number" id="fuel-main-pres" name="fuel_main_pres" placeholder="0.0" step="0.1" inputmode="decimal" oninput="calcFuel()" />
-                <span class="fuel-unit">cm</span>
-              </div>
-            </td>
-            <td><div id="fuel-main-vol" class="fuel-total" style="font-size:.85rem;">--<span class="fuel-total-unit">liters</span></div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="field" style="margin-top:.65rem;margin-bottom:0;">
-      <label>Remarks</label>
-      <textarea name="fuel_remarks" placeholder="Fuel condition, leaks, abnormal observations..."></textarea>
-    </div>
-  </div>
-
-    <button type="button" class="fuel-delivery-btn" onclick="toggleFuelDelivery()">
-    <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-    Log Fuel Delivery
-  </button>
-
-  <div class="fuel-delivery-section" id="fuelDeliverySection">
-    <div class="card-title">Fuel Delivery</div>
-    <div class="row-2">
-      <div class="field">
-        <label>Delivered To</label>
-        <select name="fuel_delivery_tank">
-          <option value="Main Tank">Main Tank</option>
-          <option value="Day Tank">Day Tank</option>
-          <option value="Both">Both Tanks</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Volume (liters)</label>
-        <input type="number" name="fuel_delivery_vol" placeholder="0" step="0.1" inputmode="decimal" />
-      </div>
-    </div>
-    <div class="field">
-      <label>Supplier / DR No.</label>
-      <input type="text" name="fuel_delivery_supplier" placeholder="e.g. Petron - DR-2025-001" />
-    </div>
-    <div class="field" style="margin-bottom:0;">
-      <label>Delivery Remarks</label>
-      <textarea name="fuel_delivery_remarks" placeholder="Delivery conditions, seal numbers, etc..."></textarea>
-    </div>
-  </div>
-
-  <button type="submit" class="submit-btn" id="fuelSubmitBtn">
-    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    SUBMIT FUEL REPORT
-  </button>
-
-</form>
-</div>
-</div>
-<div class="tab-panel" id="panel-chemical">
-<div class="container">
-<form id="chemicalForm">
-
-  <div class="card">
-    <div class="card-title">Identification</div>
-    <div class="field">
-      <label>Plant <span class="required">*</span></label>
-      <div class="id-locked" id="chem-plant-display"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="id-locked-val" id="chem-plant-val">—</span><span class="id-locked-sub">auto-filled</span></div><input type="hidden" id="chem-plant" name="chem_plant" />
-    </div>
-    <div class="field">
-      <label>Technician Name <span class="required">*</span></label>
-      <div class="id-locked" id="chem-tech-display"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="id-locked-val" id="chem-tech-val">—</span><span class="id-locked-sub">signed in</span></div><input type="hidden" id="chem-tech" name="chem_tech" />
-    </div>
-    <div class="row-2">
-      <div class="field">
-        <label>Shift</label>
-        <div class="id-locked" id="chem-shift-display"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="id-locked-val" id="chem-shift-val">—</span><span class="id-locked-sub">assigned</span></div><input type="hidden" id="chem-shift" name="chem_shift" />
-      </div>
-      <div class="field">
-        <label>Date &amp; Time</label>
-        <div class="timestamp-pill"><div class="ts-dot"></div><span class="ts-display">--</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Chemical &amp; Softener Readings</div>
-    <div class="chem-table-wrap">
-      <table class="chem-table">
-        <thead>
-          <tr>
-            <th class="col-chem">Chemical</th>
-            <th>Present Level</th>
-            <th>Unit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><div class="chem-label">Scale Inhibitor</div></td>
-            <td>
-              <div class="chem-input-wrap">
-                <input type="number" id="chem-si-pres" name="chem_si_pres" placeholder="0.0" step="0.01" inputmode="decimal" />
-              </div>
-            </td>
-            <td><div style="font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);text-align:center;">Liters</div></td>
-          </tr>
-          <tr>
-            <td><div class="chem-label">Oxygen Scavenger</div></td>
-            <td>
-              <div class="chem-input-wrap">
-                <input type="number" id="chem-os-pres" name="chem_os_pres" placeholder="0.0" step="0.01" inputmode="decimal" />
-              </div>
-            </td>
-            <td><div style="font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);text-align:center;">kg</div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>    </div>
-    <div class="field" style="margin-top:.1rem;">
-      <label>Remarks / Observations</label>
-      <textarea name="chem_remarks" placeholder="Note any abnormal levels, dosing issues, drum status..."></textarea>
-    </div>
-  </div>
-
-  <!-- REPLENISH BUTTON -->
-  <!-- MAINTENANCE CHECKLIST -->
-  <div class="card">
-    <div class="card-title">Maintenance Checklist</div>
-    <div class="checklist-grid">
-      <div class="check-item" id="chk-si" onclick="toggleCheck('si')">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="check-label">Refill Scale Inhibitor</span>
-      </div>
-      <div class="check-item" id="chk-os" onclick="toggleCheck('os')">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="check-label">Refill Oxygen Scavenger</span>
-      </div>
-      <div class="check-item" id="chk-salt" onclick="toggleCheck('salt')">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="check-label">Refill Salt</span>
-      </div>
-      <div class="check-item" id="chk-regen" onclick="toggleCheck('regen')">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="check-label">Manual Regen</span>
-      </div>
-    </div>
-    <input type="hidden" id="chem-checklist" name="chem_checklist" value="" />
-  </div>
-
-  <!-- REPLENISH BUTTON -->
-  <button type="button" class="replenish-btn" onclick="toggleReplenish()">
-    <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-    Log Chemical Replenishment
-  </button>
-
-  <!-- REPLENISH SECTION -->
-  <div class="replenish-section" id="replenishSection">
-    <div class="card-title">Chemical Replenishment</div>
-    <div class="replenish-grid">
-      <div class="replenish-item">
-        <div class="replenish-item-title">Scale Inhibitor</div>
-        <div class="field">
-          <label>Volume Added</label>
-          <div class="replenish-unit-row">
-            <input type="number" name="chem_si_replenish" placeholder="0.0" step="0.01" inputmode="decimal" style="flex:1;" />
-            <span class="replenish-unit-tag">Liters</span>
-          </div>
-        </div>
-      </div>
-      <div class="replenish-item">
-        <div class="replenish-item-title">Oxygen Scavenger</div>
-        <div class="field">
-          <label>Weight Added</label>
-          <div class="replenish-unit-row">
-            <input type="number" name="chem_os_replenish" placeholder="0.0" step="0.01" inputmode="decimal" style="flex:1;" />
-            <span class="replenish-unit-tag">kg</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="field" style="margin-top:.65rem;margin-bottom:0;">
-      <label>Replenishment Remarks</label>
-      <textarea name="chem_replenish_remarks" placeholder="Batch no., supplier, condition of chemical, etc..."></textarea>
-    </div>
-  </div>
-
-    <button type="submit" class="submit-btn" id="chemSubmitBtn">
-    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    SUBMIT CHEMICAL REPORT
-  </button>
-
-</form>
-</div>
-</div>
-<div class="tab-panel" id="panel-purchase">
-  <div class="container"><div class="coming-soon">
-    <div class="coming-soon-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-    <h3>Purchase Request</h3>
-    <p>This section is under development and will be available soon.</p>
-  </div></div>
-</div>
-
-
-<div class="toast" id="toast"></div>
-
-<script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwa79Ttaz-zpABKeYA5cUWclKYEDkoY_VJ4WiXIxLV9WBiaS9Qzfd_BW17eAw20JpgM/exec';
-
-  /* ── TABS ── */
-  const PANELS = ['electrical','vibration','fuel','chemical','purchase'];
-  function switchTab(id) {
-    PANELS.forEach(p => {
-      document.getElementById('panel-' + p).classList.toggle('active', p === id);
-      document.getElementById('tab-' + p).classList.toggle('active', p === id);
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  // Disable click on "soon" tabs
-  document.querySelectorAll('.tab-btn.disabled').forEach(btn => {
-    btn.addEventListener('click', e => e.preventDefault());
-  });
-
-  /* ── LIVE TIMESTAMP ── */
-  const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const DA=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function tick(){
-    const d = new Date();
-    const s = DA[d.getDay()]+' '+MO[d.getMonth()]+' '+d.getDate()+
-              ' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
-    document.querySelectorAll('.ts-display').forEach(el => el.textContent = s);
-  }
-  tick(); setInterval(tick, 1000);
-
-  /* ── LINE MONITORING DEVICES ── */
-  let count = 0;
-  function addDevice(){
-    count++;
-    const id = count;
-    const wrap = document.createElement('div');
-    wrap.className = 'device-card'; wrap.id = 'dc-' + id;
-    wrap.innerHTML = `
-      <div class="device-card-header">
-        <div class="device-num">Device ${id}</div>
-        <button type="button" class="del-btn" id="del-${id}" onclick="removeDevice(${id})" title="Remove">
-          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        </button>
-      </div>
-      <div class="device-card-body">
-        <div class="field">
-          <label>Device</label>
-          <input type="text" name="d_device_${id}" placeholder="e.g. Breaker 1" />
-        </div>
-        <div class="field">
-          <label>Location</label>
-          <input type="text" name="d_location_${id}" placeholder="e.g. Hammer Mill" />
-        </div>
-        <div class="reading-group">
-          <div class="reading-group-title">Voltage (V)</div>
-          <div class="readings-3">
-            <div class="reading-cell"><div class="rc-label">V<sub>AB</sub></div><input type="number" name="d_vAB_${id}" placeholder="0.0" step="any" inputmode="decimal" /><div class="rc-unit">Volts</div></div>
-            <div class="reading-cell"><div class="rc-label">V<sub>BC</sub></div><input type="number" name="d_vBC_${id}" placeholder="0.0" step="any" inputmode="decimal" /><div class="rc-unit">Volts</div></div>
-            <div class="reading-cell"><div class="rc-label">V<sub>CA</sub></div><input type="number" name="d_vCA_${id}" placeholder="0.0" step="any" inputmode="decimal" /><div class="rc-unit">Volts</div></div>
-          </div>
-        </div>
-        <div class="reading-group">
-          <div class="reading-group-title">Current (A)</div>
-          <div class="readings-3">
-            <div class="reading-cell"><div class="rc-label">I<sub>A</sub></div><input type="number" name="d_iA_${id}" placeholder="0.0" step="any" inputmode="decimal" /><div class="rc-unit">Amps</div></div>
-            <div class="reading-cell"><div class="rc-label">I<sub>B</sub></div><input type="number" name="d_iB_${id}" placeholder="0.0" step="any" inputmode="decimal" /><div class="rc-unit">Amps</div></div>
-            <div class="reading-cell"><div class="rc-label">I<sub>C</sub></div><input type="number" name="d_iC_${id}" placeholder="0.0" step="any" inputmode="decimal" /><div class="rc-unit">Amps</div></div>
-          </div>
-        </div>
-        <div class="field">
-          <label>Status</label>
-          <div class="status-row">
-            <div class="status-btn ok"  data-id="${id}" data-val="Normal"   onclick="setStatus(this)">✓ Normal</div>
-            <div class="status-btn"     data-id="${id}" data-val="Warning"  onclick="setStatus(this)">⚠ Warning</div>
-            <div class="status-btn"     data-id="${id}" data-val="Critical" onclick="setStatus(this)">✕ Critical</div>
-          </div>
-          <input type="hidden" name="d_status_${id}" value="Normal" />
-        </div>
-        <div class="field">
-          <label>Remarks</label>
-          <textarea name="d_remarks_${id}" placeholder="Observations for this device..."></textarea>
-        </div>
-      </div>`;
-    document.getElementById('deviceList').appendChild(wrap);
-    updateDel();
-    wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  function removeDevice(id){
-    const el = document.getElementById('dc-' + id);
-    if(el) el.remove();
-    updateDel(); renumber();
-  }
-  function renumber(){
-    document.querySelectorAll('.device-card').forEach((c,i) => {
-      c.querySelector('.device-num').textContent = 'Device ' + (i+1);
-    });
-  }
-  function updateDel(){
-    const cards = document.querySelectorAll('.device-card');
-    cards.forEach(c => { c.querySelector('.del-btn').disabled = cards.length === 1; });
-  }
-  function setStatus(el){
-    const id = el.dataset.id;
-    el.closest('.device-card-body').querySelectorAll('.status-btn').forEach(b => b.className = 'status-btn');
-    const v = el.dataset.val;
-    el.classList.add(v==='Normal'?'ok':v==='Warning'?'wrn':'crit');
-    el.closest('.device-card-body').querySelector(`[name="d_status_${id}"]`).value = v;
-  }
-  addDevice();
-
-  /* ── TOAST ── */
-  function showToast(msg, err){
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'toast' + (err?' error':'');
-    t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
-  /* ── JSONP ── */
-  function submitViaJSONP(params, onSuccess, onError){
-    const cbName = 'cb_' + Date.now();
-    const script = document.createElement('script');
-    const timeout = setTimeout(() => { cleanup(); onError('Timeout'); }, 10000);
-    function cleanup(){ clearTimeout(timeout); delete window[cbName]; if(script.parentNode) script.parentNode.removeChild(script); }
-    window[cbName] = function(response){
-      cleanup();
-      if(response.result === 'success') onSuccess();
-      else onError(response.message || 'Unknown error');
+  function getChecklistValues() {
+    return {
+      siRefill:   document.getElementById('chk-si')   ? document.getElementById('chk-si').value   : '',
+      osRefill:   document.getElementById('chk-os')   ? document.getElementById('chk-os').value   : '',
+      saltRefill: document.getElementById('chk-salt') ? document.getElementById('chk-salt').value : '',
+      regenCount: document.getElementById('chk-regen')? document.getElementById('chk-regen').value: '',
     };
-    params.callback = cbName;
-    const qs = Object.entries(params).map(([k,v]) => encodeURIComponent(k)+'='+encodeURIComponent(typeof v==='object'?JSON.stringify(v):v)).join('&');
-    script.src = SCRIPT_URL + '?' + qs;
-    script.onerror = () => { cleanup(); onError('Network error'); };
-    document.head.appendChild(script);
-  }
-
-  /* ── LINE MONITORING SUBMIT ── */
-  document.getElementById('electricalForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const btn = document.getElementById('elecSubmitBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation:spin 1s linear infinite;width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.2"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg> Submitting...';
-    const now = new Date();
-    const devices = [];
-    document.querySelectorAll('.device-card').forEach(card => {
-      const g = n => card.querySelector(`[name^="d_${n}_"]`)?.value || '';
-      devices.push({ device:g('device'), location:g('location'), vAB:g('vAB'), vBC:g('vBC'), vCA:g('vCA'), iA:g('iA'), iB:g('iB'), iC:g('iC'), status:g('status'), remarks:g('remarks') });
-    });
-    const params = { type:'electrical', timestamp:now.toISOString(), date:now.toLocaleDateString('en-PH'), time:now.toLocaleTimeString('en-PH'), plant:document.getElementById('elec-plant').value, technician:document.getElementById('elec-tech').value, shift:document.getElementById('elec-shift').value, devices };
-    submitViaJSONP(params,
-      function(){ showToast('✓ Line report submitted!'); document.getElementById('electricalForm').reset(); document.getElementById('deviceList').innerHTML=''; count=0; addDevice(); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> SUBMIT LINE REPORT'; },
-      function(err){ showToast('⚠ Failed. Check your connection.', true); btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> SUBMIT LINE REPORT'; }
-    );
-  });
-
-  /* ── VIBRATION SUBMIT ── */
-  document.getElementById('vibrationForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const btn = document.getElementById('vibSubmitBtn');
-    btn.disabled = true; btn.innerHTML = SPIN_SVG + ' Submitting...';
-    const now = new Date();
-    const form = document.getElementById('vibrationForm');
-    const g = function(name){ var el=form.querySelector('[name="'+name+'"]'); return el?el.value:''; };
-    const params = {
-      type:'vibration',
-      timestamp: now.toISOString(),
-      date: now.toLocaleDateString('en-PH'),
-      time: now.toLocaleTimeString('en-PH'),
-      plant:      document.getElementById('vib-plant').value,
-      technician: document.getElementById('vib-tech').value,
-      shift:      document.getElementById('vib-shift').value,
-      equipment:  document.getElementById('vib-equipment').value,
-      m1_h: g('vib_r1_h'), m1_v: g('vib_r1_v'), m1_a: g('vib_r1_a'),
-      m2_h: g('vib_r2_h'), m2_v: g('vib_r2_v'), m2_a: g('vib_r2_a'),
-      p1_h: g('vib_r3_h'), p1_v: g('vib_r3_v'), p1_a: g('vib_r3_a'),
-      p2_h: g('vib_r4_h'), p2_v: g('vib_r4_v'), p2_a: g('vib_r4_a'),
-      b1_h: g('vib_r5_h'), b1_v: g('vib_r5_v'), b1_a: g('vib_r5_a'),
-      b2_h: g('vib_r6_h'), b2_v: g('vib_r6_v'), b2_a: g('vib_r6_a'),
-      remarks: g('vib_remarks'),
-    };
-    submitViaJSONP(params,
-      function(){ showToast('Vibration report submitted!'); document.getElementById('vibrationForm').reset(); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT VIBRATION REPORT'; },
-      function(){ showToast('Failed. Check connection.',true); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT VIBRATION REPORT'; }
-    );
-  });
-
-  const SPIN_SVG='<svg viewBox="0 0 24 24" style="animation:spin 1s linear infinite;width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.2"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>';
-  const SEND_SVG='<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-
-  
-
-  /* ── FUEL STATE ── */
-  var FUEL_DIMS = { mainD:150, mainL:400, dayD:60, dayL:120 };
-
-  function cylL(h, D, L) {
-    var R=D/2; h=Math.min(Math.max(parseFloat(h)||0,0),D);
-    if(h<=0) return 0;
-    if(h>=D) return Math.PI*R*R*L/1000;
-    return L*(R*R*Math.acos((R-h)/R)-(R-h)*Math.sqrt(2*R*h-h*h))/1000;
-  }
-
-  /* ── FUEL CALCULATIONS — show volume in liters only ── */
-  function calcFuel() {
-    var dayPres  = parseFloat(document.getElementById('fuel-day-pres').value);
-    var mainPres = parseFloat(document.getElementById('fuel-main-pres').value);
-    var dayVol   = document.getElementById('fuel-day-vol');
-    var mainVol  = document.getElementById('fuel-main-vol');
-
-    if (!isNaN(dayPres) && dayPres >= 0) {
-      dayVol.innerHTML  = cylL(dayPres,FUEL_DIMS.dayD,FUEL_DIMS.dayL).toFixed(1)+'<span class="fuel-total-unit">liters</span>';
-    } else { dayVol.innerHTML = '--<span class="fuel-total-unit">liters</span>'; }
-
-    if (!isNaN(mainPres) && mainPres >= 0) {
-      mainVol.innerHTML = cylL(mainPres,FUEL_DIMS.mainD,FUEL_DIMS.mainL).toFixed(1)+'<span class="fuel-total-unit">liters</span>';
-    } else { mainVol.innerHTML = '--<span class="fuel-total-unit">liters</span>'; }
-  }
-
-  /* ── LOAD TANK DIMS FROM GAS ── */
-  function loadLastFuelReadings() {
-    var cbName='fuelCb_'+Date.now(), s=document.createElement('script');
-    var timer=setTimeout(function(){ clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); }, 8000);
-    s.onerror=function(){ clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); };
-    window[cbName]=function(res){
-      clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
-      if(!res||res.result!=='success') return;
-      if(res.mainD)   FUEL_DIMS.mainD = parseFloat(res.mainD)||150;
-      if(res.mainLen) FUEL_DIMS.mainL = parseFloat(res.mainLen)||400;
-      if(res.dayD)    FUEL_DIMS.dayD  = parseFloat(res.dayD)||60;
-      if(res.dayLen)  FUEL_DIMS.dayL  = parseFloat(res.dayLen)||120;
-      calcFuel();
-    };
-    s.src=SCRIPT_URL+'?action=getLastFuel&callback='+cbName;
-    document.head.appendChild(s);
-  }
-
-  /* ── LOAD TANK DIMS FROM GAS ── */
-  function loadLastFuelReadings() {
-    var cbName='fuelCb_'+Date.now(), s=document.createElement('script');
-    var timer=setTimeout(function(){
-      clearTimeout(timer); delete window[cbName];
-      if(s.parentNode) s.parentNode.removeChild(s);
-    }, 8000);
-    s.onerror=function(){ clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); };
-    window[cbName]=function(res){
-      clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
-      if(!res||res.result!=='success') return;
-      if(res.mainD)   FUEL_DIMS.mainD = parseFloat(res.mainD)||150;
-      if(res.mainLen) FUEL_DIMS.mainL = parseFloat(res.mainLen)||400;
-      if(res.dayD)    FUEL_DIMS.dayD  = parseFloat(res.dayD)||60;
-      if(res.dayLen)  FUEL_DIMS.dayL  = parseFloat(res.dayLen)||120;
-      calcFuel();
-    };
-    s.src=SCRIPT_URL+'?action=getLastFuel&callback='+cbName;
-    document.head.appendChild(s);
-  }
-
-
-  /* ── MAINTENANCE CHECKLIST ── */
-  var checkState = { si:false, os:false, salt:false, regen:false };
-
-  function toggleCheck(key) {
-    checkState[key] = !checkState[key];
-    var el = document.getElementById('chk-' + key);
-    if(el) el.classList.toggle('checked', checkState[key]);
-    var done = Object.keys(checkState).filter(function(k){ return checkState[k]; });
-    var labels = { si:'Refill Scale Inhibitor', os:'Refill Oxygen Scavenger', salt:'Refill Salt', regen:'Manual Regen' };
-    var cl = document.getElementById('chem-checklist');
-    if(cl) cl.value = done.map(function(k){ return labels[k]; }).join(', ');
   }
 
   function resetChecklist() {
-    Object.keys(checkState).forEach(function(k){ checkState[k]=false; });
-    ['si','os','salt','regen'].forEach(function(k){
-      var el = document.getElementById('chk-'+k);
-      if(el) el.classList.remove('checked');
+    ['chk-si','chk-os','chk-salt','chk-regen'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.value = '';
     });
-    var cl = document.getElementById('chem-checklist');
-    if(cl) cl.value = '';
   }
 
   /* ── FUEL DELIVERY TOGGLE ── */
@@ -1282,7 +452,7 @@
     );
   });
 
-  document.getElementById('chemicalForm').reset();  replenishOpen=false; document.getElementById('replenishSection').classList.remove('show'); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn./* ── CHEMICAL SUBMIT ── */
+  /* ── CHEMICAL SUBMIT ── */
   document.getElementById('chemicalForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var btn = document.getElementById('chemSubmitBtn');
@@ -1302,7 +472,10 @@
       osPrev: g('chem_os_prev'), osPres: g('chem_os_pres'),
       osConsumed: (!isNaN(osPrev) && !isNaN(osPres)) ? (osPrev - osPres).toFixed(2) : '',
       remarks: g('chem_remarks'),
-      checklist: g('chem_checklist'),
+      siRefill:   document.getElementById('chk-si')    ? document.getElementById('chk-si').value    : '',
+      osRefill:   document.getElementById('chk-os')    ? document.getElementById('chk-os').value    : '',
+      saltRefill: document.getElementById('chk-salt')  ? document.getElementById('chk-salt').value  : '',
+      regenCount: document.getElementById('chk-regen') ? document.getElementById('chk-regen').value : '',
       hasReplenish: replenishOpen ? 'YES' : 'NO',
       siReplenish:  replenishOpen ? g('chem_si_replenish') : '',
       osReplenish:  replenishOpen ? g('chem_os_replenish') : '',
@@ -1372,7 +545,7 @@
     currentUser = user;
 
     // Fill + lock all identification fields
-    ['elec','vib','fuel','chem'].forEach(function(prefix) {
+    ['elec','vib','fuel','chem','pr'].forEach(function(prefix) {
       document.getElementById(prefix + '-plant').value = user.plant || '';
       document.getElementById(prefix + '-plant-val').textContent = user.plant || '—';
       document.getElementById(prefix + '-tech').value = user.name || '';
@@ -1417,7 +590,7 @@
   function doLogout() {
     currentUser = null;
     // Clear all id fields
-    ['elec','vib','fuel','chem'].forEach(function(prefix) {
+    ['elec','vib','fuel','chem','pr'].forEach(function(prefix) {
       ['plant','tech','shift'].forEach(function(field) {
         var el = document.getElementById(prefix + '-' + field);
         if (el) el.value = '';
@@ -1433,6 +606,301 @@
 
 
 
+
+  /* ══════════════════════════════════════
+     PURCHASE REQUEST
+  ══════════════════════════════════════ */
+  var prCount = 0;
+
+  function addPRItem() {
+    prCount++;
+    var id = prCount;
+    var wrap = document.createElement('div');
+    wrap.className = 'device-card'; wrap.id = 'pr-' + id;
+    wrap.innerHTML =
+      '<div class="device-card-header">' +
+        '<div class="device-num">Item ' + id + '</div>' +
+        '<button type="button" class="del-btn" onclick="removePRItem(' + id + ')" ' + (id===1?'disabled':'') + '>' +
+          '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>' +
+        '</button>' +
+      '</div>' +
+      '<div class="device-card-body">' +
+        '<div class="field"><label>Item Name <span class="required">*</span></label>' +
+          '<input type="text" name="pr_item_' + id + '" placeholder="e.g. Ball valve 1/2 inch" required /></div>' +
+        '<div class="field"><label>Specifications / Description</label>' +
+          '<textarea name="pr_specs_' + id + '" placeholder="Brand, size, model, material, etc..."></textarea></div>' +
+        '<div class="row-2">' +
+          '<div class="field"><label>Quantity <span class="required">*</span></label>' +
+            '<input type="number" name="pr_qty_' + id + '" placeholder="1" min="1" step="1" inputmode="numeric" style="text-align:center;font-size:1.1rem;" /></div>' +
+          '<div class="field"><label>Unit</label>' +
+            '<select name="pr_unit_' + id + '">' +
+              '<option value="pcs">pcs</option><option value="sets">sets</option>' +
+              '<option value="kg">kg</option><option value="liters">liters</option>' +
+              '<option value="meters">meters</option><option value="boxes">boxes</option>' +
+              '<option value="rolls">rolls</option><option value="pairs">pairs</option>' +
+            '</select></div>' +
+        '</div>' +
+        '<div class="field"><label>Reason / Purpose <span class="required">*</span></label>' +
+          '<textarea name="pr_reason_' + id + '" placeholder="Why is this needed? Which equipment or system?"></textarea></div>' +
+      '</div>';
+    document.getElementById('prItemList').appendChild(wrap);
+    updatePRDel();
+    wrap.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function removePRItem(id) {
+    var el = document.getElementById('pr-' + id);
+    if(el) el.remove();
+    updatePRDel();
+    document.querySelectorAll('#prItemList .device-card').forEach(function(c,i){
+      c.querySelector('.device-num').textContent = 'Item ' + (i+1);
+    });
+  }
+
+  function updatePRDel() {
+    var cards = document.querySelectorAll('#prItemList .device-card');
+    cards.forEach(function(c){ c.querySelector('.del-btn').disabled = cards.length === 1; });
+  }
+
+  addPRItem();
+
+  /* PURCHASE SUBMIT */
+  document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('prSubmitBtn');
+    btn.disabled = true; btn.innerHTML = SPIN_SVG + ' Submitting...';
+    var now = new Date(), form = document.getElementById('purchaseForm');
+    function g(n){ var el=form.querySelector('[name="'+n+'"]'); return el?el.value:''; }
+    var items = [];
+    document.querySelectorAll('#prItemList .device-card').forEach(function(card, i) {
+      var r = i + 1;
+      items.push({
+        item:   card.querySelector('[name^="pr_item_"]')  ? card.querySelector('[name^="pr_item_"]').value   : '',
+        specs:  card.querySelector('[name^="pr_specs_"]') ? card.querySelector('[name^="pr_specs_"]').value  : '',
+        qty:    card.querySelector('[name^="pr_qty_"]')   ? card.querySelector('[name^="pr_qty_"]').value    : '',
+        unit:   card.querySelector('[name^="pr_unit_"]')  ? card.querySelector('[name^="pr_unit_"]').value   : '',
+        reason: card.querySelector('[name^="pr_reason_"]')? card.querySelector('[name^="pr_reason_"]').value : '',
+      });
+    });
+    var params = {
+      type:       'purchase',
+      timestamp:  now.toISOString(),
+      date:       now.toLocaleDateString('en-PH'),
+      time:       now.toLocaleTimeString('en-PH'),
+      plant:      document.getElementById('pr-plant').value,
+      technician: document.getElementById('pr-tech').value,
+      priority:   g('pr_priority'),
+      items:      JSON.stringify(items),
+    };
+    submitViaJSONP(params,
+      function(){ showToast('Purchase request submitted!'); document.getElementById('purchaseForm').reset(); document.getElementById('prItemList').innerHTML=''; prCount=0; addPRItem(); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT PURCHASE REQUEST'; },
+      function(){ showToast('Failed. Check connection.',true); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT PURCHASE REQUEST'; }
+    );
+  });
+
+
 </script>
+<!-- ══════════════════════════════════════
+     TAB 4 — CHEM & SOFTENER
+══════════════════════════════════════ -->
+<div class="tab-panel" id="panel-chemical">
+<div class="container">
+<form id="chemicalForm">
+
+  <div class="card">
+    <div class="card-title">Identification</div>
+    <div class="field">
+      <label>Plant <span class="required">*</span></label>
+      <select id="chem-plant" required>
+        <option value="" disabled selected>Select plant...</option>
+        <option value="HOREB">HOREB</option>
+        <option value="ARGAO">ARGAO</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Technician Name <span class="required">*</span></label>
+      <div class="id-locked" id="chem-tech-display"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="id-locked-val" id="chem-tech-val">—</span><span class="id-locked-sub">signed in</span></div>
+      <input type="hidden" id="chem-tech" name="chem_tech" />
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Shift</label>
+        <div class="id-locked" id="chem-shift-display"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="id-locked-val" id="chem-shift-val">—</span><span class="id-locked-sub">assigned</span></div>
+        <input type="hidden" id="chem-shift" name="chem_shift" />
+      </div>
+      <div class="field">
+        <label>Date &amp; Time</label>
+        <div class="timestamp-pill"><div class="ts-dot"></div><span class="ts-display">--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Chemical &amp; Softener Readings</div>
+    <div class="chem-table-wrap">
+      <table class="chem-table">
+        <thead>
+          <tr>
+            <th class="col-chem">Chemical</th>
+            <th>Present Level</th>
+            <th>Unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="chem-label">Scale Inhibitor</div></td>
+            <td><div class="chem-input-wrap"><input type="number" id="chem-si-pres" name="chem_si_pres" placeholder="0.0" step="0.01" inputmode="decimal" /></div></td>
+            <td><div style="font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);text-align:center;">Liters</div></td>
+          </tr>
+          <tr>
+            <td><div class="chem-label">Oxygen Scavenger</div></td>
+            <td><div class="chem-input-wrap"><input type="number" id="chem-os-pres" name="chem_os_pres" placeholder="0.0" step="0.01" inputmode="decimal" /></div></td>
+            <td><div style="font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);text-align:center;">Liters</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="field" style="margin-top:.1rem;">
+      <label>Remarks / Observations</label>
+      <textarea name="chem_remarks" placeholder="Note any abnormal levels, dosing issues, drum status..."></textarea>
+    </div>
+  </div>
+
+  <!-- MAINTENANCE CHECKLIST -->
+  <div class="card">
+    <div class="card-title">Maintenance Checklist</div>
+    <div class="checklist-grid">
+      <div class="check-item">
+        <span class="check-label">Refill Scale Inhibitor<span class="check-unit">(max 1 L)</span></span>
+        <div class="check-input-wrap">
+          <input type="number" id="chk-si" name="chk_si" placeholder="0" min="0" max="1" step="0.1" inputmode="decimal" />
+          <span class="check-unit-tag">L</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <span class="check-label">Refill Oxygen Scavenger<span class="check-unit">(max 4 L)</span></span>
+        <div class="check-input-wrap">
+          <input type="number" id="chk-os" name="chk_os" placeholder="0" min="0" max="4" step="0.1" inputmode="decimal" />
+          <span class="check-unit-tag">L</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <span class="check-label">Refill Salt<span class="check-unit">(max 50 kg)</span></span>
+        <div class="check-input-wrap">
+          <input type="number" id="chk-salt" name="chk_salt" placeholder="0" min="0" max="50" step="0.5" inputmode="decimal" />
+          <span class="check-unit-tag">kg</span>
+        </div>
+      </div>
+      <div class="check-item">
+        <span class="check-label">Manual Regen<span class="check-unit">(max 4)</span></span>
+        <div class="check-input-wrap">
+          <input type="number" id="chk-regen" name="chk_regen" placeholder="0" min="0" max="4" step="1" inputmode="numeric" />
+          <span class="check-unit-tag">times</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPLENISH BUTTON -->
+  <button type="button" class="replenish-btn" onclick="toggleReplenish()">
+    <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+    Log Chemical Replenishment
+  </button>
+
+  <div class="replenish-section" id="replenishSection">
+    <div class="card-title">Chemical Replenishment</div>
+    <div class="replenish-grid">
+      <div class="replenish-item">
+        <div class="replenish-item-title">Scale Inhibitor</div>
+        <div class="field">
+          <label>Volume Added</label>
+          <div class="replenish-unit-row">
+            <input type="number" name="chem_si_replenish" placeholder="0.0" step="0.01" inputmode="decimal" style="flex:1;" />
+            <span class="replenish-unit-tag">Liters</span>
+          </div>
+        </div>
+      </div>
+      <div class="replenish-item">
+        <div class="replenish-item-title">Oxygen Scavenger</div>
+        <div class="field">
+          <label>Volume Added</label>
+          <div class="replenish-unit-row">
+            <input type="number" name="chem_os_replenish" placeholder="0.0" step="0.01" inputmode="decimal" style="flex:1;" />
+            <span class="replenish-unit-tag">Liters</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:.65rem;margin-bottom:0;">
+      <label>Replenishment Remarks</label>
+      <textarea name="chem_replenish_remarks" placeholder="Batch no., supplier, condition of chemical, etc..."></textarea>
+    </div>
+  </div>
+
+  <button type="submit" class="submit-btn" id="chemSubmitBtn">
+    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    SUBMIT CHEMICAL REPORT
+  </button>
+
+</form>
+</div>
+</div><!-- /panel-chemical -->
+
+<!-- ══════════════════════════════════════
+     TAB 5 — PURCHASE REQUEST
+══════════════════════════════════════ -->
+<div class="tab-panel" id="panel-purchase">
+<div class="container">
+<form id="purchaseForm">
+
+  <div class="card">
+    <div class="card-title">Identification</div>
+    <div class="field">
+      <label>Plant <span class="required">*</span></label>
+      <select id="pr-plant" required>
+        <option value="" disabled selected>Select plant...</option>
+        <option value="HOREB">HOREB</option>
+        <option value="ARGAO">ARGAO</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Requested By <span class="required">*</span></label>
+      <div class="id-locked" id="pr-tech-display"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="id-locked-val" id="pr-tech-val">—</span><span class="id-locked-sub">signed in</span></div>
+      <input type="hidden" id="pr-tech" name="pr_tech" />
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Date &amp; Time</label>
+        <div class="timestamp-pill"><div class="ts-dot"></div><span class="ts-display">--</span></div>
+      </div>
+      <div class="field">
+        <label>Priority</label>
+        <select id="pr-priority" name="pr_priority">
+          <option value="Routine">Routine</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Critical">Critical</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEMS LIST -->
+  <div id="prItemList"></div>
+
+  <button type="button" class="add-device-btn" onclick="addPRItem()" style="margin-bottom:.9rem;">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Add Item
+  </button>
+
+  <button type="submit" class="submit-btn" id="prSubmitBtn">
+    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    SUBMIT PURCHASE REQUEST
+  </button>
+
+</form>
+</div>
+</div><!-- /panel-purchase -->
+
+
 </body>
 </html>
