@@ -714,61 +714,42 @@
       <table class="fuel-table">
         <thead>
           <tr>
-            <th>Tank</th>
-            <th>Previous Reading</th>
+            <th style="text-align:left;min-width:100px;">Tank</th>
             <th>Present Reading</th>
-            <th>Total Consumption</th>
+            <th>Volume</th>
           </tr>
         </thead>
         <tbody>
-          <!-- MAIN TANK -->
-          <tr>
-            <td><div class="fuel-tank-label">Main Tank</div></td>
-            <td>
-              <div class="fuel-input-wrap">
-                <input type="text" id="fuel-main-prev" name="fuel_main_prev" placeholder="—" readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;text-align:center;" />
-                <span class="fuel-unit">cm</span>
-              </div>
-              <div class="fuel-liters-display" id="fuel-main-prev-L">-- L</div>
-            </td>
-            <td>
-              <div class="fuel-input-wrap">
-                <input type="number" id="fuel-main-pres" name="fuel_main_pres" placeholder="0.0" step="0.1" inputmode="decimal" oninput="calcFuel()" />
-                <span class="fuel-unit">cm</span>
-              </div>
-              <div class="fuel-liters-display" id="fuel-main-pres-L">-- L</div>
-            </td>
-            <td><div id="fuel-main-total" class="fuel-total">--<span class="fuel-total-unit">liters</span></div></td>
-          </tr>
-          <!-- DAY TANK -->
           <tr>
             <td><div class="fuel-tank-label">Day Tank</div></td>
-            <td>
-              <div class="fuel-input-wrap">
-                <input type="text" id="fuel-day-prev" name="fuel_day_prev" placeholder="—" readonly tabindex="-1" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.2);color:var(--accent2);cursor:not-allowed;-webkit-user-select:none;user-select:none;pointer-events:none;text-align:center;" />
-                <span class="fuel-unit">cm</span>
-              </div>
-              <div class="fuel-liters-display" id="fuel-day-prev-L">-- L</div>
-            </td>
             <td>
               <div class="fuel-input-wrap">
                 <input type="number" id="fuel-day-pres" name="fuel_day_pres" placeholder="0.0" step="0.1" inputmode="decimal" oninput="calcFuel()" />
                 <span class="fuel-unit">cm</span>
               </div>
-              <div class="fuel-liters-display" id="fuel-day-pres-L">-- L</div>
             </td>
-            <td><div id="fuel-day-total" class="fuel-total">--<span class="fuel-total-unit">liters</span></div></td>
+            <td><div id="fuel-day-vol" class="fuel-total" style="font-size:.85rem;">--<span class="fuel-total-unit">liters</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="fuel-tank-label">Main Tank</div></td>
+            <td>
+              <div class="fuel-input-wrap">
+                <input type="number" id="fuel-main-pres" name="fuel_main_pres" placeholder="0.0" step="0.1" inputmode="decimal" oninput="calcFuel()" />
+                <span class="fuel-unit">cm</span>
+              </div>
+            </td>
+            <td><div id="fuel-main-vol" class="fuel-total" style="font-size:.85rem;">--<span class="fuel-total-unit">liters</span></div></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="field" style="margin-top:.1rem;">
+    <div class="field" style="margin-top:.65rem;margin-bottom:0;">
       <label>Remarks</label>
       <textarea name="fuel_remarks" placeholder="Fuel condition, leaks, abnormal observations..."></textarea>
     </div>
   </div>
 
-  <button type="button" class="fuel-delivery-btn" onclick="toggleFuelDelivery()">
+    <button type="button" class="fuel-delivery-btn" onclick="toggleFuelDelivery()">
     <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
     Log Fuel Delivery
   </button>
@@ -839,28 +820,33 @@
       <table class="chem-table">
         <thead>
           <tr>
-            <th class="col-chem">Chemical Treatment</th>
-            <th>Previous Level</th>
+            <th class="col-chem">Chemical</th>
             <th>Present Level</th>
-            <th>Total</th>
+            <th>Unit</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><div class="chem-label">Scale Inhibitor</div></td>
-            <td><div class="chem-input-wrap"><input type="number" id="chem-si-prev" name="chem_si_prev" placeholder="0.0" step="0.01" inputmode="decimal" oninput="calcChem('si')" /><span class="chem-unit">L</span></div></td>
-            <td><div class="chem-input-wrap"><input type="number" id="chem-si-pres" name="chem_si_pres" placeholder="0.0" step="0.01" inputmode="decimal" oninput="calcChem('si')" /><span class="chem-unit">L</span></div></td>
-            <td><div id="chem-si-total" class="chem-total">--<span class="chem-total-unit">calculated</span></div></td>
+            <td>
+              <div class="chem-input-wrap">
+                <input type="number" id="chem-si-pres" name="chem_si_pres" placeholder="0.0" step="0.01" inputmode="decimal" />
+              </div>
+            </td>
+            <td><div style="font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);text-align:center;">Liters</div></td>
           </tr>
           <tr>
             <td><div class="chem-label">Oxygen Scavenger</div></td>
-            <td><div class="chem-input-wrap"><input type="number" id="chem-os-prev" name="chem_os_prev" placeholder="0.0" step="0.01" inputmode="decimal" oninput="calcChem('os')" /><span class="chem-unit">L</span></div></td>
-            <td><div class="chem-input-wrap"><input type="number" id="chem-os-pres" name="chem_os_pres" placeholder="0.0" step="0.01" inputmode="decimal" oninput="calcChem('os')" /><span class="chem-unit">L</span></div></td>
-            <td><div id="chem-os-total" class="chem-total">--<span class="chem-total-unit">calculated</span></div></td>
+            <td>
+              <div class="chem-input-wrap">
+                <input type="number" id="chem-os-pres" name="chem_os_pres" placeholder="0.0" step="0.01" inputmode="decimal" />
+              </div>
+            </td>
+            <td><div style="font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);text-align:center;">kg</div></td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </div>    </div>
     <div class="field" style="margin-top:.1rem;">
       <label>Remarks / Observations</label>
       <textarea name="chem_remarks" placeholder="Note any abnormal levels, dosing issues, drum status..."></textarea>
@@ -927,7 +913,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwE-adrPJZ8xWq6ez0DnqDtu475z_HdDj1uL0jRlXj74I3h27oN36KtvUD7xkk22uY/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxCOvLychCbpNt0QKE7INLjsnKdzqPf21HactKI4w3i01opRmeyhKNQVz5w2yP8M-j/exec';
 
   /* ── TABS ── */
   const PANELS = ['electrical','vibration','fuel','chemical','purchase'];
@@ -1115,114 +1101,70 @@
 
   
 
-  /* ── FUEL STATE (dims loaded from GAS) ── */
+  /* ── FUEL STATE ── */
   var FUEL_DIMS = { mainD:150, mainL:400, dayD:60, dayL:120 };
 
-  /* ── CYLINDER VOLUME client-side ── */
   function cylL(h, D, L) {
     var R=D/2; h=Math.min(Math.max(parseFloat(h)||0,0),D);
     if(h<=0) return 0;
     if(h>=D) return Math.PI*R*R*L/1000;
     return L*(R*R*Math.acos((R-h)/R)-(R-h)*Math.sqrt(2*R*h-h*h))/1000;
   }
-  function fmtL(v){ return (!isNaN(v)&&v!==null) ? parseFloat(v).toFixed(1)+' L' : '-- L'; }
 
-  /* ── FUEL CALCULATIONS ── */
+  /* ── FUEL CALCULATIONS — show volume in liters only ── */
   function calcFuel() {
-    var tanks=[{k:'main',D:FUEL_DIMS.mainD,L:FUEL_DIMS.mainL},{k:'day',D:FUEL_DIMS.dayD,L:FUEL_DIMS.dayL}];
-    tanks.forEach(function(t){
-      var prevEl = document.getElementById('fuel-'+t.k+'-prev');
-      var presEl = document.getElementById('fuel-'+t.k+'-pres');
-      var el     = document.getElementById('fuel-'+t.k+'-total');
-      var presLEl= document.getElementById('fuel-'+t.k+'-pres-L');
-      var prev   = parseFloat(prevEl.value);
-      var pres   = parseFloat(presEl.value);
-      // Show liters for present reading
-      if (!isNaN(pres) && pres >= 0) {
-        presLEl.textContent = fmtL(cylL(pres, t.D, t.L));
-      } else {
-        presLEl.textContent = '-- L';
-      }
-      // Consumption
-      if (!isNaN(prev) && !isNaN(pres)) {
-        var diff = cylL(prev, t.D, t.L) - cylL(pres, t.D, t.L);
-        el.innerHTML = diff.toFixed(1) + '<span class="fuel-total-unit">liters</span>';
-        el.style.color = diff > 0 ? 'var(--warn)' : diff < 0 ? 'var(--success)' : 'var(--accent2)';
-      } else if (isNaN(prev) && !isNaN(pres)) {
-        el.innerHTML = '<span class="fuel-total-unit" style="font-size:.6rem;">no prev reading</span>';
-        el.style.color = 'var(--muted)';
-      } else {
-        el.innerHTML = '--<span class="fuel-total-unit">liters</span>';
-        el.style.color = 'var(--accent2)';
-      }
-    });
+    var dayPres  = parseFloat(document.getElementById('fuel-day-pres').value);
+    var mainPres = parseFloat(document.getElementById('fuel-main-pres').value);
+    var dayVol   = document.getElementById('fuel-day-vol');
+    var mainVol  = document.getElementById('fuel-main-vol');
+
+    if (!isNaN(dayPres) && dayPres >= 0) {
+      dayVol.innerHTML  = cylL(dayPres,FUEL_DIMS.dayD,FUEL_DIMS.dayL).toFixed(1)+'<span class="fuel-total-unit">liters</span>';
+    } else { dayVol.innerHTML = '--<span class="fuel-total-unit">liters</span>'; }
+
+    if (!isNaN(mainPres) && mainPres >= 0) {
+      mainVol.innerHTML = cylL(mainPres,FUEL_DIMS.mainD,FUEL_DIMS.mainL).toFixed(1)+'<span class="fuel-total-unit">liters</span>';
+    } else { mainVol.innerHTML = '--<span class="fuel-total-unit">liters</span>'; }
   }
 
-  /* ── LOAD LAST FUEL READINGS FROM GAS ── */
+  /* ── LOAD TANK DIMS FROM GAS ── */
   function loadLastFuelReadings() {
-    // Set fields to loading state
-    ['main','day'].forEach(function(t){
-      document.getElementById('fuel-'+t+'-prev').placeholder='fetching...';
-      document.getElementById('fuel-'+t+'-prev-L').textContent='...';
-    });
     var cbName='fuelCb_'+Date.now(), s=document.createElement('script');
-    var timer=setTimeout(function(){
-      // Timeout — let tech enter manually
-      delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
-      ['main','day'].forEach(function(t){
-        document.getElementById('fuel-'+t+'-prev').placeholder='enter manually';
-        document.getElementById('fuel-'+t+'-prev-L').textContent='';
-        // Re-enable for manual entry on timeout only
-        document.getElementById('fuel-'+t+'-prev').style.pointerEvents='auto';
-        document.getElementById('fuel-'+t+'-prev').style.cursor='text';
-        document.getElementById('fuel-'+t+'-prev').removeAttribute('readonly');
-        document.getElementById('fuel-'+t+'-prev').type='number';
-      });
-    }, 8000);
-
-    s.onerror=function(){
-      clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
-      ['main','day'].forEach(function(t){
-        document.getElementById('fuel-'+t+'-prev').placeholder='enter manually';
-        document.getElementById('fuel-'+t+'-prev-L').textContent='';
-        document.getElementById('fuel-'+t+'-prev').style.pointerEvents='auto';
-        document.getElementById('fuel-'+t+'-prev').style.cursor='text';
-        document.getElementById('fuel-'+t+'-prev').removeAttribute('readonly');
-        document.getElementById('fuel-'+t+'-prev').type='number';
-      });
-    };
-
+    var timer=setTimeout(function(){ clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); }, 8000);
+    s.onerror=function(){ clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); };
     window[cbName]=function(res){
-      clearTimeout(timer);
-      delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
-      // Update tank dims
+      clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
+      if(!res||res.result!=='success') return;
       if(res.mainD)   FUEL_DIMS.mainD = parseFloat(res.mainD)||150;
       if(res.mainLen) FUEL_DIMS.mainL = parseFloat(res.mainLen)||400;
       if(res.dayD)    FUEL_DIMS.dayD  = parseFloat(res.dayD)||60;
       if(res.dayLen)  FUEL_DIMS.dayL  = parseFloat(res.dayLen)||120;
-      // Fill previous readings
-      if(res.mainPrev!==''&&res.mainPrev!==undefined&&res.mainPrev!==null){
-        document.getElementById('fuel-main-prev').value=res.mainPrev;
-        document.getElementById('fuel-main-prev').placeholder='—';
-        document.getElementById('fuel-main-prev-L').textContent=fmtL(parseFloat(res.mainPrevL));
-      } else {
-        document.getElementById('fuel-main-prev').placeholder='first entry';
-        document.getElementById('fuel-main-prev-L').textContent='no prior data';
-      }
-      if(res.dayPrev!==''&&res.dayPrev!==undefined&&res.dayPrev!==null){
-        document.getElementById('fuel-day-prev').value=res.dayPrev;
-        document.getElementById('fuel-day-prev').placeholder='—';
-        document.getElementById('fuel-day-prev-L').textContent=fmtL(parseFloat(res.dayPrevL));
-      } else {
-        document.getElementById('fuel-day-prev').placeholder='first entry';
-        document.getElementById('fuel-day-prev-L').textContent='no prior data';
-      }
       calcFuel();
     };
     s.src=SCRIPT_URL+'?action=getLastFuel&callback='+cbName;
     document.head.appendChild(s);
   }
 
+  /* ── LOAD TANK DIMS FROM GAS ── */
+  function loadLastFuelReadings() {
+    var cbName='fuelCb_'+Date.now(), s=document.createElement('script');
+    var timer=setTimeout(function(){
+      clearTimeout(timer); delete window[cbName];
+      if(s.parentNode) s.parentNode.removeChild(s);
+    }, 8000);
+    s.onerror=function(){ clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s); };
+    window[cbName]=function(res){
+      clearTimeout(timer); delete window[cbName]; if(s.parentNode)s.parentNode.removeChild(s);
+      if(!res||res.result!=='success') return;
+      if(res.mainD)   FUEL_DIMS.mainD = parseFloat(res.mainD)||150;
+      if(res.mainLen) FUEL_DIMS.mainL = parseFloat(res.mainLen)||400;
+      if(res.dayD)    FUEL_DIMS.dayD  = parseFloat(res.dayD)||60;
+      if(res.dayLen)  FUEL_DIMS.dayL  = parseFloat(res.dayLen)||120;
+      calcFuel();
+    };
+    s.src=SCRIPT_URL+'?action=getLastFuel&callback='+cbName;
+    document.head.appendChild(s);
+  }
 
   /* ── FUEL DELIVERY TOGGLE ── */
   var deliveryOpen=false;
@@ -1234,84 +1176,40 @@
   /* ── FUEL SUBMIT ── */
   document.getElementById('fuelForm').addEventListener('submit', function(e){
     e.preventDefault();
-    var btn=document.getElementById('fuelSubmitBtn');
+    var btn = document.getElementById('fuelSubmitBtn');
     btn.disabled=true; btn.innerHTML=SPIN_SVG+' Submitting...';
     var now=new Date(), form=document.getElementById('fuelForm');
     function g(n){ var el=form.querySelector('[name="'+n+'"]'); return el?el.value:''; }
-    var mp=parseFloat(g('fuel_main_prev')), ms=parseFloat(g('fuel_main_pres'));
-    var dp=parseFloat(g('fuel_day_prev')),  ds=parseFloat(g('fuel_day_pres'));
-    var params={
-      type:'fuel',
-      timestamp:now.toISOString(), date:now.toLocaleDateString('en-PH'), time:now.toLocaleTimeString('en-PH'),
-      plant:document.getElementById('fuel-plant').value,
-      technician:document.getElementById('fuel-tech').value,
-      shift:document.getElementById('fuel-shift').value,
-      mainTankPrev:g('fuel_main_prev'), mainTankPres:g('fuel_main_pres'),
-      mainTankConsumption:(!isNaN(mp)&&!isNaN(ms))?(mp-ms).toFixed(2):'',
-      dayTankPrev:g('fuel_day_prev'), dayTankPres:g('fuel_day_pres'),
-      dayTankConsumption:(!isNaN(dp)&&!isNaN(ds))?(dp-ds).toFixed(2):'',
-      dayTankConsumptionL: (!isNaN(dp)&&!isNaN(ds))?(cylL(dp,FUEL_DIMS.dayD,FUEL_DIMS.dayL)-cylL(ds,FUEL_DIMS.dayD,FUEL_DIMS.dayL)).toFixed(1):'',
-      remarks:g('fuel_remarks'),
-      hasDelivery:deliveryOpen?'YES':'NO',
-      deliveryTank:    deliveryOpen?g('fuel_delivery_tank'):'',
-      deliveryVol:     deliveryOpen?g('fuel_delivery_vol'):'',
-      deliverySupplier:deliveryOpen?g('fuel_delivery_supplier'):'',
-      deliveryRemarks: deliveryOpen?g('fuel_delivery_remarks'):'',
+
+    var dayPres  = parseFloat(g('fuel_day_pres'));
+    var mainPres = parseFloat(g('fuel_main_pres'));
+    var dayVolL  = !isNaN(dayPres)  ? cylL(dayPres,FUEL_DIMS.dayD,FUEL_DIMS.dayL).toFixed(1)   : '';
+    var mainVolL = !isNaN(mainPres) ? cylL(mainPres,FUEL_DIMS.mainD,FUEL_DIMS.mainL).toFixed(1) : '';
+    var params = {
+      type:       'fuel',
+      timestamp:  now.toISOString(),
+      date:       now.toLocaleDateString('en-PH'),
+      time:       now.toLocaleTimeString('en-PH'),
+      plant:      document.getElementById('fuel-plant').value,
+      technician: document.getElementById('fuel-tech').value,
+      shift:      document.getElementById('fuel-shift').value,
+      dayTankPres:  g('fuel_day_pres'),
+      dayTankVolL:  dayVolL,
+      mainTankPres: g('fuel_main_pres'),
+      mainTankVolL: mainVolL,
+      remarks:      g('fuel_remarks'),
+      hasDelivery:  deliveryOpen ? 'YES' : 'NO',
+      deliveryVol:  deliveryOpen ? g('fuel_delivery_vol')      : '',
+      deliverySupplier: deliveryOpen ? g('fuel_delivery_supplier') : '',
+      deliveryRemarks:  deliveryOpen ? g('fuel_delivery_remarks')  : '',
     };
     submitViaJSONP(params,
-      function(){
-        showToast('Fuel report submitted!');
-        // Save pres values before reset
-        var savedMainPres = document.getElementById('fuel-main-pres').value;
-        var savedDayPres  = document.getElementById('fuel-day-pres').value;
-        var savedMainPresL = document.getElementById('fuel-main-pres-L').textContent;
-        var savedDayPresL  = document.getElementById('fuel-day-pres-L').textContent;
-        document.getElementById('fuelForm').reset();
-        deliveryOpen=false;
-        document.getElementById('fuelDeliverySection').classList.remove('show');
-        // Immediately pre-fill previous from what was just submitted
-        if(savedMainPres){
-          document.getElementById('fuel-main-prev').value=savedMainPres;
-          document.getElementById('fuel-main-prev-L').textContent=savedMainPresL;
-        }
-        if(savedDayPres){
-          document.getElementById('fuel-day-prev').value=savedDayPres;
-          document.getElementById('fuel-day-prev-L').textContent=savedDayPresL;
-        }
-        calcFuel();
-        window.scrollTo({top:0,behavior:'smooth'});
-        btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT FUEL REPORT';
-        // Also refresh from sheet after delay to catch any delivery adjustments
-        setTimeout(loadLastFuelReadings, 4000);
-      },
+      function(){ showToast('Fuel report submitted!'); document.getElementById('fuelForm').reset(); deliveryOpen=false; document.getElementById('fuelDeliverySection').classList.remove('show'); calcFuel(); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT FUEL REPORT'; },
       function(){ showToast('Failed. Check connection.',true); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT FUEL REPORT'; }
     );
   });
 
-
-  /* ── REPLENISH TOGGLE ── */
-  var replenishOpen = false;
-  function toggleReplenish() {
-    replenishOpen = !replenishOpen;
-    document.getElementById('replenishSection').classList.toggle('show', replenishOpen);
-  }
-
-  /* ── CHEMICAL CALCULATIONS ── */
-  function calcChem(chem) {
-    var prev = parseFloat(document.getElementById('chem-' + chem + '-prev').value);
-    var pres = parseFloat(document.getElementById('chem-' + chem + '-pres').value);
-    var el   = document.getElementById('chem-' + chem + '-total');
-    if (!isNaN(prev) && !isNaN(pres)) {
-      var diff = (prev - pres).toFixed(2);
-      el.innerHTML = diff + '<span class="chem-total-unit">L consumed</span>';
-      el.style.color = diff > 0 ? 'var(--warn)' : diff < 0 ? 'var(--success)' : 'var(--accent2)';
-    } else {
-      el.innerHTML = '--<span class="chem-total-unit">calculated</span>';
-      el.style.color = 'var(--accent2)';
-    }
-  }
-
-  /* ── CHEMICAL SUBMIT ── */
+  document.getElementById('chemicalForm').reset();  replenishOpen=false; document.getElementById('replenishSection').classList.remove('show'); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn./* ── CHEMICAL SUBMIT ── */
   document.getElementById('chemicalForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var btn = document.getElementById('chemSubmitBtn');
@@ -1332,12 +1230,12 @@
       osConsumed: (!isNaN(osPrev) && !isNaN(osPres)) ? (osPrev - osPres).toFixed(2) : '',
       remarks: g('chem_remarks'),
       hasReplenish: replenishOpen ? 'YES' : 'NO',
-      siReplenish:  replenishOpen ? g('chem_si_replenish')       : '',
-      osReplenish:  replenishOpen ? g('chem_os_replenish')       : '',
+      siReplenish:  replenishOpen ? g('chem_si_replenish') : '',
+      osReplenish:  replenishOpen ? g('chem_os_replenish') : '',
       replenishRemarks: replenishOpen ? g('chem_replenish_remarks') : '',
     };
     submitViaJSONP(params,
-      function() { showToast('Chemical report submitted!'); document.getElementById('chemicalForm').reset(); calcChem('si'); calcChem('os'); replenishOpen=false; document.getElementById('replenishSection').classList.remove('show'); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT CHEMICAL REPORT'; },
+      function() { showToast('Chemical report submitted!'); document.getElementById('chemicalForm').reset();  replenishOpen=false; document.getElementById('replenishSection').classList.remove('show'); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT CHEMICAL REPORT'; },
       function() { showToast('Failed. Check connection.', true); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT CHEMICAL REPORT'; }
     );
   });
