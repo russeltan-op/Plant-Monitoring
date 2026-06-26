@@ -389,6 +389,34 @@
   .id-locked-val { color: var(--text); font-weight: 500; }
   .id-locked-sub { font-size: .7rem; color: var(--muted); margin-left: auto; }
 
+
+  /* ── MAINTENANCE CHECKLIST ── */
+  .checklist-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem; margin-bottom:.9rem; }
+  .checklist-grid { display:grid; grid-template-columns:1fr 1fr; gap:.55rem; }
+  .check-item {
+    display:flex; align-items:center; gap:10px;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:9px; padding:.65rem .8rem; cursor:pointer;
+    transition:all .2s; -webkit-tap-highlight-color:transparent;
+    user-select:none;
+  }
+  .check-item.checked {
+    border-color:var(--success); background:rgba(16,185,129,.12);
+  }
+  .check-box {
+    width:20px; height:20px; border-radius:5px; flex-shrink:0;
+    border:2px solid var(--border); background:var(--surface3);
+    display:flex; align-items:center; justify-content:center;
+    transition:all .2s;
+  }
+  .check-item.checked .check-box {
+    background:var(--success); border-color:var(--success);
+  }
+  .check-box svg { width:11px; height:11px; stroke:#fff; fill:none; stroke-width:3; opacity:0; transition:opacity .15s; }
+  .check-item.checked .check-box svg { opacity:1; }
+  .check-label { font-size:.82rem; color:var(--muted); font-weight:500; line-height:1.3; transition:color .2s; }
+  .check-item.checked .check-label { color:var(--success); }
+
   /* ── COMING SOON PANEL ── */
   .coming-soon {
     text-align: center; padding: 3rem 1.5rem;
@@ -496,8 +524,7 @@
       Fuel
     </button>
     <button class="tab-btn" onclick="switchTab('chemical')" id="tab-chemical">
-      <svg viewBox="0 0 24 24"><path d="M9 3h6v10l4 8H5l4-8V3z"/><line x1="9" y1="7" x2="15" y2="7"/></svg>
-      Chemical
+      <svg viewBox="0 0 24 24"><path d="M9 3h6v10l4 8H5l4-8V3z"/><line x1="9" y1="7" x2="15" y2="7"/></svg>Chem &amp; Softener
     </button>
     <button class="tab-btn disabled" id="tab-purchase">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -815,7 +842,7 @@
   </div>
 
   <div class="card">
-    <div class="card-title">Chemical Treatment</div>
+    <div class="card-title">Chemical &amp; Softener Readings</div>
     <div class="chem-table-wrap">
       <table class="chem-table">
         <thead>
@@ -854,6 +881,31 @@
   </div>
 
   <!-- REPLENISH BUTTON -->
+  <!-- MAINTENANCE CHECKLIST -->
+  <div class="card">
+    <div class="card-title">Maintenance Checklist</div>
+    <div class="checklist-grid">
+      <div class="check-item" id="chk-si" onclick="toggleCheck('si')">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="check-label">Refill Scale Inhibitor</span>
+      </div>
+      <div class="check-item" id="chk-os" onclick="toggleCheck('os')">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="check-label">Refill Oxygen Scavenger</span>
+      </div>
+      <div class="check-item" id="chk-salt" onclick="toggleCheck('salt')">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="check-label">Refill Salt</span>
+      </div>
+      <div class="check-item" id="chk-regen" onclick="toggleCheck('regen')">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="check-label">Manual Regen</span>
+      </div>
+    </div>
+    <input type="hidden" id="chem-checklist" name="chem_checklist" value="" />
+  </div>
+
+  <!-- REPLENISH BUTTON -->
   <button type="button" class="replenish-btn" onclick="toggleReplenish()">
     <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
     Log Chemical Replenishment
@@ -863,7 +915,6 @@
   <div class="replenish-section" id="replenishSection">
     <div class="card-title">Chemical Replenishment</div>
     <div class="replenish-grid">
-
       <div class="replenish-item">
         <div class="replenish-item-title">Scale Inhibitor</div>
         <div class="field">
@@ -874,7 +925,6 @@
           </div>
         </div>
       </div>
-
       <div class="replenish-item">
         <div class="replenish-item-title">Oxygen Scavenger</div>
         <div class="field">
@@ -885,7 +935,6 @@
           </div>
         </div>
       </div>
-
     </div>
     <div class="field" style="margin-top:.65rem;margin-bottom:0;">
       <label>Replenishment Remarks</label>
@@ -893,7 +942,7 @@
     </div>
   </div>
 
-  <button type="submit" class="submit-btn" id="chemSubmitBtn">
+    <button type="submit" class="submit-btn" id="chemSubmitBtn">
     <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     SUBMIT CHEMICAL REPORT
   </button>
@@ -913,7 +962,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCharqwZ5COxwvY6ouwiFjuDa5zm0bWsFml8_iAtaBunoUs2ZplhVT5B9vinfUe504/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwa79Ttaz-zpABKeYA5cUWclKYEDkoY_VJ4WiXIxLV9WBiaS9Qzfd_BW17eAw20JpgM/exec';
 
   /* ── TABS ── */
   const PANELS = ['electrical','vibration','fuel','chemical','purchase'];
@@ -1166,6 +1215,30 @@
     document.head.appendChild(s);
   }
 
+
+  /* ── MAINTENANCE CHECKLIST ── */
+  var checkState = { si:false, os:false, salt:false, regen:false };
+
+  function toggleCheck(key) {
+    checkState[key] = !checkState[key];
+    var el = document.getElementById('chk-' + key);
+    if(el) el.classList.toggle('checked', checkState[key]);
+    var done = Object.keys(checkState).filter(function(k){ return checkState[k]; });
+    var labels = { si:'Refill Scale Inhibitor', os:'Refill Oxygen Scavenger', salt:'Refill Salt', regen:'Manual Regen' };
+    var cl = document.getElementById('chem-checklist');
+    if(cl) cl.value = done.map(function(k){ return labels[k]; }).join(', ');
+  }
+
+  function resetChecklist() {
+    Object.keys(checkState).forEach(function(k){ checkState[k]=false; });
+    ['si','os','salt','regen'].forEach(function(k){
+      var el = document.getElementById('chk-'+k);
+      if(el) el.classList.remove('checked');
+    });
+    var cl = document.getElementById('chem-checklist');
+    if(cl) cl.value = '';
+  }
+
   /* ── FUEL DELIVERY TOGGLE ── */
   var deliveryOpen=false;
   function toggleFuelDelivery(){
@@ -1229,13 +1302,14 @@
       osPrev: g('chem_os_prev'), osPres: g('chem_os_pres'),
       osConsumed: (!isNaN(osPrev) && !isNaN(osPres)) ? (osPrev - osPres).toFixed(2) : '',
       remarks: g('chem_remarks'),
+      checklist: g('chem_checklist'),
       hasReplenish: replenishOpen ? 'YES' : 'NO',
       siReplenish:  replenishOpen ? g('chem_si_replenish') : '',
       osReplenish:  replenishOpen ? g('chem_os_replenish') : '',
       replenishRemarks: replenishOpen ? g('chem_replenish_remarks') : '',
     };
     submitViaJSONP(params,
-      function() { showToast('Chemical report submitted!'); document.getElementById('chemicalForm').reset();  replenishOpen=false; document.getElementById('replenishSection').classList.remove('show'); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT CHEMICAL REPORT'; },
+      function() { showToast('Chemical report submitted!'); document.getElementById('chemicalForm').reset(); resetChecklist(); replenishOpen=false; document.getElementById('replenishSection').classList.remove('show'); window.scrollTo({top:0,behavior:'smooth'}); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT CHEMICAL REPORT'; },
       function() { showToast('Failed. Check connection.', true); btn.disabled=false; btn.innerHTML=SEND_SVG+' SUBMIT CHEMICAL REPORT'; }
     );
   });
